@@ -1,5 +1,4 @@
 using System;
-using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,13 +7,26 @@ public class ButtonObject : MonoBehaviour
     public bool Open;
     [SerializeField]private GameObject objectToMove;
     [SerializeField]private Move_Object_To function;
-    [SerializeField]private SphereCollider collider;
-    [SerializeField]private float TimeToMove;
+    private SphereCollider buttonCollider;
+    [SerializeField]private float moveSpeed;
     [SerializeField]private int UnitsToMove;
+    [SerializeField]private bool Reverses;
+    private bool active = false;
     private Vector3 direction;
-    
+    private bool playTween = false;
+    private float unitsMoved = 0;
+
+    private void Start()
+    {
+        buttonCollider = objectToMove.GetComponent<SphereCollider>();
+    }
     private void OnMouseDown()
     {
+        if (active == true)
+        {
+            return;
+        }
+        active = true;
         Open = !Open;
         if (Open)
         {
@@ -53,8 +65,32 @@ public class ButtonObject : MonoBehaviour
             }
         }
         direction.Normalize();
-        Debug.Log((direction * UnitsToMove));
-        //objectToMove.transform.DOMove((direction * UnitsToMove), TimeToMove);
+        playTween = true;
+        
+    }
+
+    
+    void Update()
+    {
+        if (playTween == true && objectToMove && unitsMoved < UnitsToMove)
+        {
+            objectToMove.transform.position += direction * (moveSpeed * Time.deltaTime);
+            unitsMoved += 0.01f;
+            
+        }
+
+        if (unitsMoved >= UnitsToMove)
+        {
+            active = false;
+            if (Reverses)
+            {
+                unitsMoved = 0;
+                playTween = false;
+                direction = direction * -1;
+            }
+        }
+
+        
     }
 
     enum Move_Object_To
