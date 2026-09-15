@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - SPike
+  - Spike
+  - Deathbox
   layers:
   - Default
   - TransparentFX
