@@ -1,105 +1,68 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 public class ButtonObject : MonoBehaviour
 {
     public bool Open;
-    [SerializeField]private GameObject objectToMove;
-    [SerializeField]private Move_Object_To function;
-    private SphereCollider buttonCollider;
-    [SerializeField]private float moveSpeed;
-    [SerializeField]private int UnitsToMove;
-    [SerializeField]private bool Reverses;
-    private bool active = false;
-    private Vector3 direction;
-    private bool playTween = false;
-    private float unitsMoved = 0;
-
+    [SerializeField]private Transform objectToMove;
+    [SerializeField] private Vector3 moveDirection = Vector3.up;
+    [SerializeField] private float moveDistance = 2f;
+    [SerializeField] private bool canReverse = true;
+    [SerializeField] private float moveSpeed = 2f;
+    private Vector3 startPos;
+    private Vector3 targetPos;
+    private bool isOpen;
+    private bool isMoving;
+    private Vector3 destination;
+    
     private void Start()
     {
-        buttonCollider = objectToMove.GetComponent<SphereCollider>();
+        // sets start and target pos
+        startPos = objectToMove.position;
+        targetPos = startPos + moveDirection.normalized * moveDistance;
     }
+
     private void OnMouseDown()
     {
-        if (active == true)
-        {
-            return;
-        }
-        active = true;
-        Open = !Open;
-        if (Open)
-        {
-            
-            switch (function)
-            {
-                case Move_Object_To.move_Right:
-                {
-                    direction = Vector3.right;
-                    break;
-                }
-                case Move_Object_To.move_Left:
-                {
-                    direction = Vector3.left;
-                    break;
-                }
-                case Move_Object_To.move_Down:
-                {
-                    direction = Vector3.down;
-                    break;
-                }
-                case Move_Object_To.move_Up:
-                {
-                    direction = Vector3.up;
-                    break;
-                }
-                case Move_Object_To.move_Backward:
-                    direction = Vector3.back;
-                    break;
-                default:
-                {
-                    direction = Vector3.forward;
-                    break;
-                }
-                
-            }
-        }
-        direction.Normalize();
-        playTween = true;
-        
+        //checks if not moving
+        if (isMoving) return;
+        Toggle();
     }
 
-    
-    void Update()
+    public void Toggle()
     {
-        if (playTween == true && objectToMove && unitsMoved < UnitsToMove)
+        //toggles 
+        isOpen = !isOpen;
+        if (isOpen)
         {
-            objectToMove.transform.position += direction * (moveSpeed * Time.deltaTime);
-            unitsMoved += 0.01f;
-            
+            destination = targetPos;
         }
-
-        if (unitsMoved >= UnitsToMove)
+        else
         {
-            active = false;
-            if (Reverses)
-            {
-                unitsMoved = 0;
-                playTween = false;
-                direction = direction * -1;
-            }
+            destination = startPos;
         }
-
-        
+        //starts moving the object
+        StartCoroutine(MoveObject(destination));
     }
 
-    enum Move_Object_To
+    private IEnumerator MoveObject(Vector3 newDestination)
     {
-        move_Right,
-        move_Left,
-        move_Up,
-        move_Down,
-        move_Forward,
-        move_Backward,
+        isMoving = true;
+        // while it has not reached its final destination
+        while (Vector3.Distance(objectToMove.position, newDestination) > 0.01f)
+        {
+            //move it to towards the final destination
+            objectToMove.position = Vector3.MoveTowards(
+                objectToMove.position,
+                destination,
+                moveSpeed * Time.deltaTime
+            );
+            yield return null;
+        }
+        //sets it transform to the destination so it cant overshoot
+        objectToMove.position = destination;
+        isMoving = false;
     }
 }
