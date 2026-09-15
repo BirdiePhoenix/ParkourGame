@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class PlatformMovement : MonoBehaviour
+public class PlatformMovementLeftRight : MonoBehaviour
 {
     private Vector3 _startPosition;
 
-    private float _elapsedTime;
-    private float _frequency = 2f;
-    private float _amplitude = 3f;
+    [SerializeField] private float _elapsedTime;
+    [SerializeField] private float _frequency = 2f;
+    [SerializeField] private float _amplitude = 3f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,6 +20,6 @@ public class PlatformMovement : MonoBehaviour
     void Update()
     {
         _elapsedTime += Time.deltaTime * _frequency;
-        transform.position = _startPosition + Vector3.up * Mathf.Sin(_elapsedTime) * _amplitude;
+        transform.position = _startPosition + Vector3.left * Mathf.Sin(_elapsedTime) * _amplitude;
     }
 }

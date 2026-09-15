@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using UnityEngine.InputSystem;
 
 public class Timer : MonoBehaviour
 {
@@ -11,29 +13,34 @@ public class Timer : MonoBehaviour
 
     string MinText;
     string SecText;
-
-    private void Update()
+    private float time;
+    private void Start()
     {
-        MinTime = 0 - ((int)Time.time / 60);
-        SecTime = 60 - ((int)Time.time % 60);
+        StartTimer(0.5f);
+    }
+    void Update()
+    {
+        if (time != 0)
+        {
+            time -= Time.deltaTime;
+            if (time < 0)
+            {
+                text.color = Color.crimson;
+                time = 0;
+            }
+            int minutes = Mathf.FloorToInt(time / 60);
+            int seconds = Mathf.FloorToInt(time % 60);
+            int milliseconds = Mathf.FloorToInt((time * 1000) % 1000);
 
-        if (SecTime >= 60) { SecTime = 0; MinTime += 1; }
-        if (SecTime <= 0) { SecTime = 0; }
-        if (MinTime <= 0) { MinTime = 0; }
-
-        MinText = MinTime.ToString();
-        SecText = SecTime.ToString();
-
-        if (MinText.Length <= 1) { MinText = $"0{MinText}"; };
-        if (SecText.Length <= 1) { SecText = $"0{SecText}"; };
-
-        text.text = $"{MinText}:{SecText}";
-
-        if (text.text == "00:00") { Debug.Log("Times Up!"); }
+            if (seconds >= 60) { seconds = 0; }
+            if (milliseconds >= 1000) { milliseconds = 0; }
+            text.text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
+        }
     }
 
-    public void StartTimer()
+    public void StartTimer(float minutes)
     {
-        
+        time = minutes * 60;
+        text.color = Color.cyan;
     }
 }
