@@ -29,22 +29,42 @@ public class Portal : MonoBehaviour
         {
             crystalOne.SetActive (true);
         }
+        else
+        {
+            crystalOne.SetActive (false);
+        }
         if (crystalTwoActive)
         {
-            crystalTwo.SetActive (true);
+            crystalTwo.SetActive(true);
+        }
+        else
+        {
+            crystalTwo.SetActive(false);
         }
         if (crystalThreeActive)
         {
             crystalThree.SetActive (true);
         }
+        else
+        {
+            crystalThree.SetActive(false);
+        }
         if (crystalFourActive)
         {
             crystalFour.SetActive (true);
         }
+        else
+        {
+            crystalFour.SetActive(false);
+        }
 
-        if(crystalOneActive && crystalTwo && crystalThree && crystalFour)
+        if (crystalOneActive && crystalTwoActive && crystalThreeActive && crystalFourActive)
         {
             portal.SetActive(true);
+        }
+        else
+        {
+            portal.SetActive(false);
         }
     }
 }
