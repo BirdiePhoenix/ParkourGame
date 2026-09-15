@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     private void Movement()
     {
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        rb.MovePosition(rb.position + ((transform.forward * moveInput.y) + (transform.right * moveInput.x)) * moveSpeed * Time.deltaTime);
+        rb.MovePosition(rb.position + ((transform.forward * moveInput.y) + (transform.right * moveInput.x)) * (moveSpeed * Time.deltaTime));
     }
 
     private void CameraHandling()
