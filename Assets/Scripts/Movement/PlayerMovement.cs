@@ -20,11 +20,11 @@ public class PlayerMovement : MonoBehaviour
 
     private Camera mainCamera;
     
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction sprintAction;
-    private InputAction lookAction;
-    private InputAction slideAction;
+    public InputAction moveAction;
+    public InputAction jumpAction;
+    public InputAction sprintAction;
+    public InputAction lookAction;
+    public InputAction slideAction;
 
     private float currentMoveSpeed = 0f;
     private Vector3 moveDirection = Vector3.zero;
