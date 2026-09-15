@@ -5,28 +5,33 @@ using UnityEngine;
 public class DroppingPlatform : MonoBehaviour
 {
     private Vector3 originPos;
-    private Vector3 targetPos;
+    private Quaternion originRotate; // <-- Change type to Quaternion to match transform.rotation
 
     private Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Quaternion rotation = transform.rotation;
+        originRotate = rotation; // <-- This assignment is now valid since both are Quaternion
+        originPos = transform.position;
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
-
     private IEnumerator Falling()
     {
         yield return new WaitForSeconds(2);
         rb.constraints = RigidbodyConstraints.None;
-        rb.useGravity = true; 
-        
+        // Removed the incorrect assignment to rb.rotation
+        rb.useGravity = true;
 
         yield return new WaitForSeconds(3);
-        Destroy(gameObject);
+        rb.useGravity = false;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        transform.rotation = originRotate;
+        transform.position = originPos;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -36,5 +41,4 @@ public class DroppingPlatform : MonoBehaviour
             StartCoroutine(Falling());
         }
     }
-
 }
