@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -86,31 +87,32 @@ public class PlayerMovement : MonoBehaviour
     {
         mainCamera = GetComponentInChildren<Camera>();
         //characterController = GetComponent<CharacterController>();
-
-        
-
         currentMoveSpeed = moveSpeed;
     }
 
     private void Update()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, LayerMask.GetMask("Ground"));
+        Movement();
+        CameraHandling();
+    }
+
+    private void Movement()
+    {
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        Vector2 lookInput = lookAction.ReadValue<Vector2>();
+        rb.MovePosition(rb.position + ((transform.forward * moveInput.y) + (transform.right * moveInput.x)) * moveSpeed * Time.deltaTime);
+    }
+
+    private void CameraHandling()
+    {
         //float currentMouseSensitivity = inputActions.controlSchemes == "Gamepad" ? gamePadSensitivity : mouseSensitivity;
+        Vector2 lookInput = lookAction.ReadValue<Vector2>();
         float mouseX = lookInput.x;
         float mouseY = lookInput.y;
-        rb.MovePosition(rb.position + ((transform.forward * moveInput.y) + (transform.right * moveInput.x)) * moveSpeed * Time.deltaTime);
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, LayerMask.GetMask("Ground"));
 
         cameraPitch -= mouseY * mouseSensitivity;
         cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f);
         cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX * mouseSensitivity);
-        //rb.linearVelocity = new Vector3(moveInput.x, rb.linearVelocity.y, moveInput.y);
-    }
-
-    public void OnMovement(InputAction.CallbackContext context)
-    {
-        //moveInput = context.ReadValue<Vector2>();
-    }
+    }   
 }
