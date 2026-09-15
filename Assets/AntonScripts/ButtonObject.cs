@@ -9,7 +9,6 @@ public class ButtonObject : MonoBehaviour
     [SerializeField]private Transform objectToMove;
     [SerializeField] private Vector3 moveDirection = Vector3.up;
     [SerializeField] private float moveDistance = 2f;
-    [SerializeField] private bool canReverse = true;
     [SerializeField] private float moveSpeed = 2f;
     private Vector3 startPos;
     private Vector3 targetPos;
