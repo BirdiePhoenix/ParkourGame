@@ -11,12 +11,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private InputSystem_Actions inputActions;
     
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction sprintAction;
-    private InputAction lookAction;
-    private InputAction slideAction;
-    private InputAction interactAction;
+    public InputAction moveAction;
+    public InputAction jumpAction;
+    public InputAction sprintAction;
+    public InputAction lookAction;
+    public InputAction slideAction;
+    public InputAction interactAction;
     
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform cameraTransform;
