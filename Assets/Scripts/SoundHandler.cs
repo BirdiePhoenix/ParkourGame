@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class SoundHandler : MonoBehaviour
@@ -56,17 +57,28 @@ public class SoundHandler : MonoBehaviour
 
     private void JumpAction_performed(InputAction.CallbackContext obj)
     {
+        if (!_playerMovement.TouchingGround)
+        {
+            return;
+        }
         string jumpSound = JumpSFX[Random.Range(0,3)];
-        PlaySFX($"{jumpSound},false,Player");
+        PlaySFX($"{jumpSound}", false, playerObject,false,"");
     }
 
     private void SprintAction_performed(InputAction.CallbackContext obj)
     {
-        PlaySFX($"Run_Asphalt,false,Player");
+        if (!_playerMovement.TouchingGround)
+        {
+            return;
+        }
+        PlaySFX("Run_Asphalt", false, playerObject,false,"");
     }
     private void SlideAction_performed(InputAction.CallbackContext obj)
     {
-        
+        if (!_playerMovement.TouchingGround)
+        {
+            return;
+        }
     }
 
     private void SlideAction_canceled(InputAction.CallbackContext obj)
@@ -76,9 +88,9 @@ public class SoundHandler : MonoBehaviour
 
     private void moveAction_performed(InputAction.CallbackContext obj)
     {
-        if (!walking)
+        if (!walking && _playerMovement.TouchingGround)
         {
-            PlaySFX("Walk_Asphalt,false,Player");
+            PlaySFX("Walk_Asphalt",false,playerObject,false,"");
             walking = !walking;
         }
     }
@@ -94,51 +106,69 @@ public class SoundHandler : MonoBehaviour
         GameObject obj = GameObject.Find(name);
         obj.GetComponent<AudioSource>().Stop();
     }
-    public void PlaySFX(string args)
+
+
+    
+    public void PlaySFX(string soundName, bool loops, GameObject objectToBePlayedOn,bool createNewObject = false,string newObjectName = "",Vector3 newObjectPosition = new Vector3())
     {
-        //[0] SFX NAME [1] Loops [2] GameObject [3,4,5] PosX,PosY,PosZ
-        string[] argsArray = args.Split(',');
         //iterates to the right sound
         for (int i = 0; i < AvaibleSounds.Length; i++)
         {
-            if (AvaibleSounds[i].name != argsArray[0])
+            if (AvaibleSounds[i].name != soundName)
             {
                 continue;
             }
-            //tries to find the gameobject
-            Debug.Log(argsArray[2]);
-            GameObject go = GameObject.Find(argsArray[2]);
-            if (go == null)
+
+            if (objectToBePlayedOn == null)
             {
                 // if no gameobject or position then 
-                if (argsArray[3] == "" || argsArray[4] == "" || argsArray[5] == "")
+                if (!createNewObject)
                 {
-                    Debug.Log($"GameObject {argsArray[2]} not found and no position set");
+                    Debug.Log($"GameObject createNewObject = false");
                     return;
                 }
                 else
                 {
-                    //creates a new gameobject at position [x,y,z]
-                    GameObject newObj = new GameObject("SFXObject");
-                    newObj.transform.position = new Vector3(float.Parse(argsArray[3]), float.Parse(argsArray[4]),
-                        float.Parse(argsArray[5]));
+                    //else it will create 
+                    for (int v = 0; v < Resources.LoadAll<GameObject>("itemsToSpawn").Length; v++)
+                    {
+                        if (Resources.LoadAll<GameObject>("itemsToSpawn")[v].name == newObjectName)
+                        {
+                            GameObject newObj = new GameObject(newObjectName);
+                            try
+                            {
+                                newObj.transform.position = newObjectPosition;
+                                
+                            }
+                            catch (Exception err)
+                            {
+                                Debug.Log($"You forgot position values! {err}");
+                                return;
+                            }
+                            objectToBePlayedOn = newObj;
+                        }
+                        else
+                        {
+                            Debug.Log($"{newObjectName} prefab doesn't exist");
+                        }
+                    }
                 }
             }
+            Debug.Log(objectToBePlayedOn);
             // if it does not have audio source then add it
-            if (go.GetComponent<AudioSource>() == null)
+            if (objectToBePlayedOn.GetComponent<AudioSource>() == null)
             {
-                go.AddComponent<AudioSource>();
+                objectToBePlayedOn.AddComponent<AudioSource>();
             }
             // if loop is true then set it to loop
-            if (argsArray[1] == "true")
+            if (loops == true)
             {
-                go.GetComponent<AudioSource>().loop = true;
+                objectToBePlayedOn.GetComponent<AudioSource>().loop = true;
             }
             //finally plays the sound
-            go.GetComponent<AudioSource>().Stop();
-            go.GetComponent<AudioSource>().PlayOneShot(AvaibleSounds[i]);
+            objectToBePlayedOn.GetComponent<AudioSource>().PlayOneShot(AvaibleSounds[i]);
             
-            Debug.Log(go);
+            Debug.Log(objectToBePlayedOn);
         }
     }
 }
