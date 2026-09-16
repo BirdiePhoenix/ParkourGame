@@ -22,7 +22,8 @@ public class test_move_interakt_start : MonoBehaviour
     {
         if (test_move_interakt_start_end.PickUpCrystalEnd == 0 && PickUpCrystalStart == 0)
         {
-            Debug.Log("time start");
+            Timer timer = GameObject.Find("TimerText").GetComponent<Timer>();
+            if (timer != null) { timer.StartTimer(0.1f); }
             PickUpCrystalStart = 1;
         } 
     }

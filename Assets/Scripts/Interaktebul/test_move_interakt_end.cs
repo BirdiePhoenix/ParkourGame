@@ -23,16 +23,19 @@ public class test_move_interakt_start_end : MonoBehaviour
     {
         if (test_move_interakt_start.PickUpCrystalStart == 1)
         {
-            if (PartOfTheGame <= 3)
+            Timer timer = GameObject.Find("TimerText").GetComponent<Timer>();
+            if (PartOfTheGame <= 3 && timer.GetTime() != 0)
             {
                 if (PartOfTheGame == 3)
                 {
+                    if (timer != null) { timer.StopTimer(); }
                     PartOfTheGame += 1;
                     PickUpCrystalEnd = 2;
                     Debug.Log("good game");
                 }
                 else
                 {
+                    if (timer != null) { timer.StopTimer(); }
                     PartOfTheGame += 1;
                     PickUpCrystalEnd = 1;
                     Debug.Log("good job");

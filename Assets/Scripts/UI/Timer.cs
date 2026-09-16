@@ -14,10 +14,6 @@ public class Timer : MonoBehaviour
     string MinText;
     string SecText;
     private float time;
-    private void Start()
-    {
-        StartTimer(0.5f);
-    }
     void Update()
     {
         if (time != 0)
@@ -25,8 +21,8 @@ public class Timer : MonoBehaviour
             time -= Time.deltaTime;
             if (time < 0)
             {
-                text.color = Color.crimson;
-                time = 0;
+                test_move_interakt_start start = GameObject.Find("Cube").GetComponent<test_move_interakt_start>();
+                TimeOut(start);
             }
             int minutes = Mathf.FloorToInt(time / 60);
             int seconds = Mathf.FloorToInt(time % 60);
@@ -38,9 +34,24 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public float GetTime() { return time; }
+
+    public void TimeOut(test_move_interakt_start start)
+    {
+        start.PickUpCrystalStart = 0;
+        text.color = Color.crimson;
+        time = 0;
+    }
+
     public void StartTimer(float minutes)
     {
         time = minutes * 60;
         text.color = Color.cyan;
+    }
+
+    public void StopTimer()
+    {
+        text.text = "";
+        time = 0;
     }
 }
