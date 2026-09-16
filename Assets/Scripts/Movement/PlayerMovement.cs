@@ -10,31 +10,31 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody rb;
     private InputSystem_Actions inputActions;
-
-    [SerializeField] private float jumpForce = 1000f;
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private bool isGrounded;
+    
+    private InputAction moveAction;
+    private InputAction jumpAction;
+    private InputAction sprintAction;
+    private InputAction lookAction;
+    private InputAction slideAction;
+    private InputAction interactAction;
+    
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float gamePadSensitivity = 0.1f;
-
-    private float cameraPitch = 0f;
-    private bool isSliding = false;
-    private bool isVaulting = false;
-    private bool isWallRunning = false;
-    Vector2 moveInput;
-    Vector2 lookInput;
-
-    public float maxSpeed = 50f;
-    public float acceleration = 20f;
-    public float groundDeceleration = 20f;
-    [Range(0f, 1f)] public float airControl = 0.4f;
     
-    [Header("Vault Settings")] 
-    public float vaultMaxDistance = 1.5f;
-    public float vaultSpeed = 0.2f;
-    public LayerMask obstacleMask;
+    [Header("Movement Settings")]
+    [SerializeField] private float maxSpeed = 50f;
+    [SerializeField] private float acceleration = 20f;
+    [SerializeField] private float groundDeceleration = 20f;
+    [SerializeField] private float jumpForce = 1000f;
+    [Range(0f, 1f)]
+    [SerializeField] private float airControl = 0.4f;
+    
+    [Header("Vault Settings")]
+    [SerializeField] private float vaultMaxDistance = 1.5f;
+    [SerializeField] private float vaultSpeed = 0.2f;
+    [SerializeField] private LayerMask obstacleMask;
 
     [Header("Raycast Positions")]
     [SerializeField] private Transform eyeLevel;
@@ -53,12 +53,14 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit leftWallHit, rightWallHit;
     private bool wallLeft, wallRight;
     
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction sprintAction;
-    private InputAction lookAction;
-    private InputAction slideAction;
-    private InputAction interactAction;
+    private float cameraPitch = 0f;
+    private bool isGrounded;
+    private bool isSliding = false;
+    private bool isVaulting = false;
+    private bool isWallRunning = false;
+    
+    private Vector2 moveInput;
+    private Vector2 lookInput;
     
     private void Awake()
     {
@@ -98,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        rb.linearDamping = 0;
+        rb.linearDamping = 1;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 

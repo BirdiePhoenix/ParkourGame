@@ -865,7 +865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
       propertyPath: acceleration
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
       propertyPath: wallJumpSideForce
