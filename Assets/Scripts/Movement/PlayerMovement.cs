@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public InputAction slideAction;
     public InputAction interactAction;
     
+
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 0.1f;
@@ -55,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     
     private float cameraPitch = 0f;
     private bool isGrounded;
+    public bool grounded => isGrounded;
     private bool isSliding = false;
     private bool isVaulting = false;
     private bool isWallRunning = false;
