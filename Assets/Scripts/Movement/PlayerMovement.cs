@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float cameraPitch = 0f;
     private bool isSliding = false;
+    private bool isVaulting = false;
+    private bool isWallRunning = false;
     Vector2 moveInput;
     Vector2 lookInput;
 
@@ -25,6 +30,28 @@ public class PlayerMovement : MonoBehaviour
     public float acceleration = 20f;
     public float groundDeceleration = 20f;
     [Range(0f, 1f)] public float airControl = 0.4f;
+    
+    [Header("Vault Settings")] 
+    public float vaultMaxDistance = 1.5f;
+    public float vaultSpeed = 0.2f;
+    public LayerMask obstacleMask;
+
+    [Header("Raycast Positions")]
+    [SerializeField] private Transform eyeLevel;
+    [SerializeField] private Transform waistLevel;
+
+    [Header("Wall Run Settings")] 
+    [SerializeField] private LayerMask wallMask;
+    [SerializeField] private float wallRunForce = 30f;
+    [SerializeField] private float maxWallRunSpeed = 12f;
+    [SerializeField] private float wallClimbCounterForce = 4f;
+    [SerializeField] private float wallJumpUpForce = 7f;
+    [SerializeField] private float wallJumpSideForce = 8f;
+
+    [Header("Wall Detection")] 
+    [SerializeField] private float wallCheckDistance = 0.8f;
+    private RaycastHit leftWallHit, rightWallHit;
+    private bool wallLeft, wallRight;
     
     private InputAction moveAction;
     private InputAction jumpAction;
@@ -77,10 +104,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpAction_performed(InputAction.CallbackContext obj)
     {
-        if (isGrounded)
+        if (!isGrounded)
+            return;
+        
+        TryVault();
+        WallJump();
+
+        if (!isVaulting)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
-        }
+        }        
+        
     }
 
     private void SlideAction_performed(InputAction.CallbackContext obj)
@@ -118,11 +152,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CheckForWall();
+
+        bool isMidAir = !Physics.CheckSphere(transform.position - new Vector3(0f, 1f, 0f), 0.3f, wallMask);
+
+        if ((wallLeft || wallRight) && isMidAir)
+        {
+            StartWallRun();
+        }
+        else
+        {
+            StopWallRun();
+        }   
+        
         Movement();
+    }
+
+    private void CheckForWall()
+    {
+        wallRight = Physics.Raycast(transform.position, transform.right, out rightWallHit, wallCheckDistance, wallMask);
+        wallLeft = Physics.Raycast(transform.position, -transform.right, out leftWallHit, wallCheckDistance, wallMask);
     }
 
     private void Movement()
     {
+        if (isVaulting)
+            return;
+        
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         
         Vector3 targetDirection = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
@@ -155,6 +211,94 @@ public class PlayerMovement : MonoBehaviour
         }
         
         rb.AddForce(forceToApply, ForceMode.Force);
+    }
+    
+    private void TryVault()
+    {
+        if (isVaulting)
+            return;
+
+        if (Physics.Raycast(waistLevel.position, transform.forward, out RaycastHit wallHit, vaultMaxDistance,
+                obstacleMask))
+        {
+            if (!Physics.Raycast(eyeLevel.position, transform.forward, vaultMaxDistance, obstacleMask))
+            {
+                Vector3 vaultTargetPos =  wallHit.point + (transform.forward * 2f) + (Vector3.up * 1f);
+                
+                StartCoroutine(ExecuteVault(vaultTargetPos));
+            }
+        }
+    }
+
+    private IEnumerator ExecuteVault(Vector3 targetPos)
+    {
+        isVaulting = true;
+        rb.isKinematic = true;
+        
+        Vector3 startPos = transform.position;
+        float timeElapsed = 0f;
+
+        while (timeElapsed < vaultSpeed)
+        {
+            transform.position = Vector3.Lerp(startPos, targetPos, timeElapsed/vaultSpeed);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        
+        transform.position = targetPos;
+        
+        rb.isKinematic = false;
+        isVaulting = false;
+    }
+
+    private void StartWallRun()
+    {
+        if (!isWallRunning)
+        {
+            isWallRunning = true;
+            rb.useGravity = false;
+        }
+        
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, -wallClimbCounterForce * Time.fixedDeltaTime, rb.linearVelocity.z);
+        
+        Vector3 wallNormal = wallRight ? rightWallHit.normal : leftWallHit.normal;
+        Vector3 wallForward = Vector3.Cross(wallNormal, transform.up);
+
+        if (Vector3.Dot(transform.forward, wallForward) < 0)
+        {
+            wallForward = -wallForward;
+        }
+        
+
+        if (rb.linearVelocity.magnitude < maxWallRunSpeed)
+        {
+            rb.AddForce(wallForward * wallRunForce, ForceMode.Force);
+        }
+
+    }
+
+    private void StopWallRun()
+    {
+        if (isWallRunning)
+        {
+            isWallRunning = false;
+            rb.useGravity = true;
+        }
+    }
+
+    private void WallJump()
+    {
+        if (!isWallRunning)
+            return;
+        
+        Vector3 wallNormal = wallRight ? rightWallHit.normal : leftWallHit.normal;
+        
+        Vector3 jumpDirection = (transform.up * wallJumpUpForce) + (wallNormal * wallJumpSideForce);
+
+        StopWallRun();
+        
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        rb.AddForce(jumpDirection, ForceMode.VelocityChange);
     }
 
     private void CameraHandling()

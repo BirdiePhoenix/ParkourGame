@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4075462528756793962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1152288316130269714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7500845214515422374}
+  m_Layer: 0
+  m_Name: EyeLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7500845214515422374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152288316130269714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.572, z: 0.379}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4075462528756793962}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2075242533210061698
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +289,37 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &5467791338344246656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4117897916958779439}
+  m_Layer: 0
+  m_Name: WaistLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4117897916958779439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5467791338344246656}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.171, z: 0.456}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4075462528756793962}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6353163482049776830
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +354,8 @@ Transform:
   m_Children:
   - {fileID: 6852726263034450111}
   - {fileID: 7359016143305445304}
+  - {fileID: 7500845214515422374}
+  - {fileID: 4117897916958779439}
   - {fileID: 5191443098567234680}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -314,10 +378,26 @@ MonoBehaviour:
   cameraTransform: {fileID: 7359016143305445304}
   mouseSensitivity: 0.1
   gamePadSensitivity: 0.1
-  maxSpeed: 20
-  acceleration: 50
+  maxSpeed: 50
+  acceleration: 20
   groundDeceleration: 40
   airControl: 0.4
+  vaultMaxDistance: 1.5
+  vaultSpeed: 0.2
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
+  eyeLevel: {fileID: 7500845214515422374}
+  waistLevel: {fileID: 4117897916958779439}
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 128
+  wallRunForce: 30
+  maxWallRunSpeed: 12
+  wallClimbCounterForce: 4
+  wallJumpUpForce: 7
+  wallJumpSideForce: 8
+  wallCheckDistance: 0.8
 --- !u!54 &4476301821493474545
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -343,7 +423,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &4038364330384939214
 CapsuleCollider:
