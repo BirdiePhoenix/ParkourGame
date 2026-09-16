@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float gamePadSensitivity = 0.1f;
-    public bool TouchingGround => isGrounded;
+    public bool TouchingGround { get {return isGrounded; } }
 
     private float cameraPitch = 0f;
     private bool isSliding = false;

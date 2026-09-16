@@ -14,8 +14,8 @@ public class SoundHandler : MonoBehaviour
     // maybe add events from movement to trigger player events?
     private AudioClip[] AvaibleSounds;
     private List<GameObject> _audioInScene;
-    private string _pathToSFX = System.IO.Path.Combine(Application.dataPath, "SFX");
-    [SerializeField]private GameObject playerObject;
+    private string _pathToSFX = Path.Combine(Application.dataPath, "SFX");
+    [SerializeField] private GameObject playerObject;
     private PlayerMovement _playerMovement;
 
     private string[] JumpSFX;
@@ -90,7 +90,7 @@ public class SoundHandler : MonoBehaviour
     {
         if (!walking && _playerMovement.TouchingGround)
         {
-            PlaySFX("Walk_Asphalt",false,playerObject,false,"");
+            PlaySFX("Walk_Asphalt",false,playerObject);
             walking = !walking;
         }
     }
