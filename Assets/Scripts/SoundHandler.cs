@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class SoundHandler : MonoBehaviour
 {
+    //GAME
     private AudioClip[] _obtainableSounds;
     [SerializeField] private GameObject playerObject;
     private PlayerMovement _playerMovement;
@@ -33,7 +34,6 @@ public class SoundHandler : MonoBehaviour
         Slide,
         Vault
     }
-
 
     private void Awake()
     {
@@ -295,7 +295,6 @@ public class SoundHandler : MonoBehaviour
         if (walkAudio != null)
             walkAudio.Stop();
     }
-
 
     private void PlayRandomSoundOfType(PlayerSoundType sound, bool loop = false)
     {

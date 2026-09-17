@@ -770,7 +770,7 @@ GameObject:
   - component: {fileID: 2074392954}
   - component: {fileID: 2074392955}
   m_Layer: 0
-  m_Name: GameHandler
+  m_Name: SoundHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
