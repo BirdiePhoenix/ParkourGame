@@ -56,10 +56,14 @@ public class PlayerMovement : MonoBehaviour
     
     private float cameraPitch = 0f;
     private bool isGrounded;
-    public bool grounded => isGrounded;
+    
     private bool isSliding = false;
     private bool isVaulting = false;
     private bool isWallRunning = false;
+    
+    public bool wallrunning => isWallRunning;
+    public bool grounded => isGrounded;
+    public bool vaulting => isVaulting;
     
     private Vector2 moveInput;
     private Vector2 lookInput;
