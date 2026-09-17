@@ -13,7 +13,7 @@ public class Timer : MonoBehaviour
 
     string MinText;
     string SecText;
-    private float time;
+    public float time;
     void Update()
     {
         if (time != 0)
@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
             time -= Time.deltaTime;
             if (time < 0)
             {
-                test_move_interakt_start start = GameObject.Find("Cube").GetComponent<test_move_interakt_start>();
+                test_move_interakt_start start = GameObject.Find("crystal").GetComponent<test_move_interakt_start>();   
                 TimeOut(start);
             }
             int minutes = Mathf.FloorToInt(time / 60);
