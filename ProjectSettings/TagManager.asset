@@ -8,6 +8,10 @@ TagManager:
   - SPike
   - Spike
   - Deathbox
+  - Crystal1
+  - Crystal2
+  - Crystal3
+  - Crystal4
   layers:
   - Default
   - TransparentFX
