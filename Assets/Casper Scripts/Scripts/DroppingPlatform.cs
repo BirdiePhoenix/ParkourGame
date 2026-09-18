@@ -9,6 +9,8 @@ public class DroppingPlatform : MonoBehaviour
 
     private Rigidbody rb;
 
+    [SerializeField] private float timeBeforeDropp;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,7 +24,7 @@ public class DroppingPlatform : MonoBehaviour
 
     private IEnumerator Falling()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(timeBeforeDropp);
         rb.constraints = RigidbodyConstraints.None;
         // Removed the incorrect assignment to rb.rotation
         rb.useGravity = true;

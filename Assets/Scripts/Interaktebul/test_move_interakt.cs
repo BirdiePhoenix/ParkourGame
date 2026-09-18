@@ -4,6 +4,10 @@ public class test_move_interakt_start : MonoBehaviour
 {
     public float PickUpCrystalStart = 0;
     public test_move_interakt_start_end test_move_interakt_start_end;
+    public Timer timer;
+
+    public MeshRenderer mesh;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,18 +21,26 @@ public class test_move_interakt_start : MonoBehaviour
         {
             PickUpCrystalStart = 0;
         }
+        if(timer.time == 0)
+        {
+            mesh.enabled = true;
+            PickUpCrystalStart = 0;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (test_move_interakt_start_end.PickUpCrystalEnd == 0 && PickUpCrystalStart == 0)
         {
-            Timer timer = GameObject.Find("TimerText").GetComponent<Timer>();
+            mesh.enabled = false;
+            Timer timer = GameObject.Find("GameManager").GetComponent<Timer>();
             if (timer != null) { timer.StartTimer(0.1f); }
             PickUpCrystalStart = 1;
-        } 
+        }
+
     }
     private void OnTriggerExit(Collider other)
     {
         //Debug.Log("exit");
     }
+
 }
