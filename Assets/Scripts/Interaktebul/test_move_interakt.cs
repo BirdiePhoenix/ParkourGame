@@ -8,6 +8,8 @@ public class test_move_interakt_start : MonoBehaviour
 
     public MeshRenderer mesh;
 
+    public float timeMins;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,7 +35,7 @@ public class test_move_interakt_start : MonoBehaviour
         {
             mesh.enabled = false;
             Timer timer = GameObject.Find("GameManager").GetComponent<Timer>();
-            if (timer != null) { timer.StartTimer(0.1f); }
+            if (timer != null) { timer.StartTimer(timeMins); }
             PickUpCrystalStart = 1;
         }
 
