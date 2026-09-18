@@ -19,12 +19,12 @@ public class PlayerDie : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Spike"))
         {
-           // SceneManager.LoadScene(Casper);
+           SceneManager.LoadScene(2);
         }
 
-        if (other.gameObject.CompareTag("DeathBox"))
+        if (other.gameObject.CompareTag("Deathbox"))
         {
-            // SceneManager.LoadScene(Casper);
+            SceneManager.LoadScene(2);
         }
     }
 }
