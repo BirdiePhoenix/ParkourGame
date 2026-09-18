@@ -91,19 +91,19 @@ public class SoundHandler : MonoBehaviour
 
         if (!playerObject.GetComponent<AudioSource>().clip)
         {
-            _jumpAudio = playerObject.AddComponent<AudioSource>();
+            _jumpAudio = playerObject.GetComponent<AudioSource>();
         }
         if (!playerObject.GetComponent<AudioSource>().clip)
         {
-            _walkAudio = playerObject.AddComponent<AudioSource>();
+            _walkAudio = playerObject.GetComponent<AudioSource>();
         }
         if (!playerObject.GetComponent<AudioSource>().clip)
         {
-            _sprintAudio = playerObject.AddComponent<AudioSource>();
+            _sprintAudio = playerObject.GetComponent<AudioSource>();
         }
         if (!playerObject.GetComponent<AudioSource>().clip)
         {
-            _slideAudio = playerObject.AddComponent<AudioSource>();
+            _slideAudio = playerObject.GetComponent<AudioSource>();
         }
         
     }
