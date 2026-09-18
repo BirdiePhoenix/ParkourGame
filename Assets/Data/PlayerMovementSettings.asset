@@ -19,11 +19,11 @@ MonoBehaviour:
   airControl: 0.4
   vaultMaxDistance: 1.5
   vaultSpeed: 0.2
-  wallRunForce: 30
+  wallRunForce: 500
   maxWallRunSpeed: 12
   wallClimbCounterForce: 4
-  wallJumpUpForce: 7
-  wallJumpSideForce: 8
+  wallJumpUpForce: 15
+  wallJumpSideForce: 18
   wallCheckDistance: 0.8
   slideSpeedBoost: 5
   slideFriction: 5

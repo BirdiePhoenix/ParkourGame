@@ -272,7 +272,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(wallForward * settings.wallRunForce, ForceMode.Force);
         }
-
     }
 
     private void StopWallRun()
@@ -301,11 +300,13 @@ public class PlayerMovement : MonoBehaviour
     
     private void JumpAction_performed(InputAction.CallbackContext obj)
     {
+        if (isWallRunning)
+            WallJump();
+            
         if (!isGrounded)
             return;
         
         TryVault();
-        WallJump();
 
         if (!isVaulting)
         {
