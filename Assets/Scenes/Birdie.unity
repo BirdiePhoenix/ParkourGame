@@ -411,6 +411,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &536942714 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4277979611615755189, guid: ad7c63cc4c023344187dced4fd5b207a, type: 3}
+  m_PrefabInstance: {fileID: 1050750492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &704196716
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ccd79a4168250348b5c28bbff68f731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
-  panel: {fileID: 1050750493}
+  panel: {fileID: 536942714}
   player: {fileID: 91711988}
 --- !u!4 &899707462
 Transform:
@@ -794,11 +799,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad7c63cc4c023344187dced4fd5b207a, type: 3}
---- !u!1 &1050750493 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 408841047112693743, guid: ad7c63cc4c023344187dced4fd5b207a, type: 3}
-  m_PrefabInstance: {fileID: 1050750492}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1115785103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,6 +1087,10 @@ PrefabInstance:
       propertyPath: acceleration
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
+      propertyPath: pauseDisplay
+      value: 
+      objectReference: {fileID: 536942714}
     - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
       propertyPath: wallJumpSideForce
       value: 8
