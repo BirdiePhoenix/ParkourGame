@@ -157,9 +157,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Movement()
     {
-        if (isVaulting)
-            return;
-        
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         
         Vector3 targetDirection = (transform.forward * moveInput.y + transform.right * moveInput.x);
