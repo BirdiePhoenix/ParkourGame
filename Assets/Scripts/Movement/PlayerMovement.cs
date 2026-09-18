@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public InputAction lookAction;
     public InputAction slideAction;
     public InputAction interactAction;
+    public InputAction pauseAction;
     
     
     [SerializeField] private Transform groundCheck;
@@ -53,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
     
     private Vector2 moveInput;
     private Vector2 lookInput;
+
+    public bool paused = false;
     
     private void Awake()
     {
@@ -64,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         lookAction = InputSystem.actions.FindAction("Look");
         slideAction = InputSystem.actions.FindAction("Crouch");
         interactAction = InputSystem.actions.FindAction("Interact");
+        pauseAction = InputSystem.actions.FindAction("Pause");
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -80,6 +84,14 @@ public class PlayerMovement : MonoBehaviour
         slideAction.canceled += SlideAction_canceled;
         
         interactAction.performed += InteractAction_performed;
+        pauseAction.performed += PauseAction_performed;
+    }
+
+    private void PauseAction_performed(InputAction.CallbackContext obj)
+    {
+        paused = true;
+        PauseMenu.instance.player = this;
+        PauseMenu.instance.PauseGame();
     }
 
     private void InteractAction_performed(InputAction.CallbackContext obj)
@@ -93,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         slideAction.performed -= SlideAction_performed;
         slideAction.canceled -= SlideAction_canceled;
         interactAction.performed -= InteractAction_performed;
+        pauseAction.performed -= PauseAction_performed;
     }
 
     private void Start()
@@ -103,7 +116,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        CameraHandling();
+        if (paused != true) { CameraHandling(); }
+        
         isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, LayerMask.GetMask("Ground"));
         
         CheckForWall();

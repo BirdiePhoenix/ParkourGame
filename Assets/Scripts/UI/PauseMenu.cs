@@ -3,22 +3,32 @@ using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
-    private void OnEnable()
+    [SerializeField] GameObject panel;
+
+    public static PauseMenu instance;
+    public PlayerMovement player;
+
+    private void Start()
+    {
+        instance = this;
+    }
+
+    public void PauseGame()
     {
         Time.timeScale = 0f;
         Cursor.visible = true;
+        panel.SetActive(true);
+        CollectableUI collectableUI = gameObject.GetComponent<CollectableUI>();
+        collectableUI.ColorCode();
         Cursor.lockState = CursorLockMode.None;
-    }
-    private void OnDisable()
-    {
-        Time.timeScale = 1f;
     }
 
     public void Close() 
     { 
-        gameObject.SetActive(false);
-
+        panel.SetActive(false);
+        player.paused = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
     }
 }
