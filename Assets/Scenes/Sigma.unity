@@ -444,8 +444,8 @@ MonoBehaviour:
   Open: 0
   objectToMove: {fileID: 1840400318}
   moveDirection: {x: 0, y: 1, z: 0}
-  moveDistance: 2
-  moveSpeed: 100
+  moveDistance: 200
+  moveSpeed: 0.5
 --- !u!1001 &1643413063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -543,7 +543,7 @@ GameObject:
   - component: {fileID: 1840400317}
   - component: {fileID: 1840400316}
   - component: {fileID: 1840400315}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -637,7 +637,7 @@ Transform:
   m_GameObject: {fileID: 1840400314}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 87.68, y: 13.44, z: 2.22}
+  m_LocalPosition: {x: 87.68, y: 9.31, z: 2.22}
   m_LocalScale: {x: 20, y: 20, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

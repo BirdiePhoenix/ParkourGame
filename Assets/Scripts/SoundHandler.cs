@@ -78,6 +78,7 @@ public class SoundHandler : MonoBehaviour
     
     private void Start()
     {
+       
         //gets player actions
         _playerMovement = playerObject.GetComponent<PlayerMovement>();
         _playerMovement.moveAction.performed += moveAction_performed;
