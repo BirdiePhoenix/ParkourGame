@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Configuration Asset")] 
     [SerializeField] private MovementSettings settings;
-    [SerializeField] private GameObject pauseDisplay;
+    //[SerializeField] private GameObject pauseDisplay;
     
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
@@ -401,14 +401,14 @@ public class PlayerMovement : MonoBehaviour
         //PauseMenu.instance.player = this;
         //PauseMenu.instance.PauseGame();
 
-        pauseDisplay.SetActive(true);
+        //pauseDisplay.SetActive(true);
         InputActions.FindActionMap("Player").Disable();
         InputActions.FindActionMap("UI").Enable();
     }
 
     private void PauseActionUI_performed(InputAction.CallbackContext obj)
     {
-        pauseDisplay.SetActive(false);
+        //pauseDisplay.SetActive(false);
         InputActions.FindActionMap("UI").Disable();
         InputActions.FindActionMap("Player").Enable();
     }
