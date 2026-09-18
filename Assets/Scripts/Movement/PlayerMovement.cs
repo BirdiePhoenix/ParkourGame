@@ -45,8 +45,11 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     public bool grounded => isGrounded;
     private bool isSliding = false;
+    public bool IsSliding => isSliding;
     private bool isVaulting = false;
+    public bool IsVaulting => isVaulting;
     private bool isWallRunning = false;
+    public bool IsWallRunning => isWallRunning;
     private float slideTimer = 0f;
     private Vector3 slideDirection;
     private float originalHeight;
