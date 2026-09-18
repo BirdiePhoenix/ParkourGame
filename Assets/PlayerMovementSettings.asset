@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbca1404de5541a46bf13baa5496884d, type: 3}
+  m_Name: PlayerMovementSettings
+  m_EditorClassIdentifier: Assembly-CSharp::MovementSettings
+  maxSpeed: 8
+  acceleration: 100
+  groundDeceleration: 80
+  jumpForce: 5
+  airControl: 0.4
+  vaultMaxDistance: 1.5
+  vaultSpeed: 0.2
+  wallRunForce: 30
+  maxWallRunSpeed: 12
+  wallClimbCounterForce: 4
+  wallJumpUpForce: 7
+  wallJumpSideForce: 8
+  wallCheckDistance: 0.8
+  slideSpeedBoost: 5
+  slideFriction: 5
+  slideMaxDuration: 1.2
+  crouchHeight: 1
