@@ -161,7 +161,7 @@ public class SoundHandler : MonoBehaviour
 
     private bool CurrentlyWallrunning()
     {
-        return _playerMovement.wallrunning;
+        return _playerMovement.IsWallRunning;
     }
     
     private AudioSource CreateAudioSource()
@@ -192,20 +192,26 @@ public class SoundHandler : MonoBehaviour
     private void JumpAction_performed(InputAction.CallbackContext obj)
     {
         //checks to make sure it does not play twice
-        if (!CurrentlyTouchingGround() || _jumpAudioPlayed)
+        if (_jumpAudioPlayed)
             return;
+
         //stops the walk/sprint sfx
         _jumpAudioPlayed = true;
         StopMovementSfx();
-        //plays jump+vault or only jump
-        if(_playerMovement.vaulting)
+        if (!CurrentlyTouchingGround())
         {
-            PlayRandomSoundOfType(PlayerSoundType.Jump);
-            PlayRandomSoundOfType(PlayerSoundType.Vault);
+            if (CurrentlyWallrunning())
+            {
+                PlayRandomSoundOfType(PlayerSoundType.Jump);
+            }
+            return;
         }
-        else
+
+        //plays jump+vault or only jump
+        PlayRandomSoundOfType(PlayerSoundType.Jump);
+        if (_playerMovement.vaulting)
         {
-            PlayRandomSoundOfType(PlayerSoundType.Jump);
+            PlayRandomSoundOfType(PlayerSoundType.Vault);
         }
     }
 
