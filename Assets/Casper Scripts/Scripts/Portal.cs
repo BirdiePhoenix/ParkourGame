@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+    public GameObject spike;
+
     public GameObject crystalOne;
     public GameObject crystalTwo;
     public GameObject crystalThree;
@@ -28,6 +30,7 @@ public class Portal : MonoBehaviour
         if (crystalOneActive)
         {
             crystalOne.SetActive (true);
+            spike.SetActive (false);
         }
         else
         {
