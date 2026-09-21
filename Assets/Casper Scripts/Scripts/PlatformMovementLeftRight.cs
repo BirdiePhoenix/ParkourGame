@@ -22,4 +22,5 @@ public class PlatformMovementLeftRight : MonoBehaviour
         _elapsedTime += Time.deltaTime * _frequency;
         transform.position = _startPosition + Vector3.left * Mathf.Sin(_elapsedTime) * _amplitude;
     }
+
 }

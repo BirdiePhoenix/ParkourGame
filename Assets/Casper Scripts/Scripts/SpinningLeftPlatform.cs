@@ -18,4 +18,6 @@ public class SpinningLeftPlatform : MonoBehaviour
         // Rotate around the Y axis by 'force' degrees per frame
         transform.Rotate(0f, force * Time.deltaTime, 0f);
     }
+
+
 }
