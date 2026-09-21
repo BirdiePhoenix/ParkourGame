@@ -1071,42 +1071,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4476301821493474545, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: maxSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: InputActions
-      value: 
-      objectReference: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: acceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: pauseDisplay
-      value: 
-      objectReference: {fileID: 536942714}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: wallJumpSideForce
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: pauseAction.m_Name
-      value: Pause
-      objectReference: {fileID: 0}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: pauseActionUI.m_Name
-      value: Pause Action UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 5663272249097085706, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
-      propertyPath: pauseActionPlayer.m_Name
-      value: Pause Action Player
-      objectReference: {fileID: 0}
     - target: {fileID: 6353163482049776830, guid: d878d4a083d45f24fa08ed5abe9633b4, type: 3}
       propertyPath: m_Name
       value: Player
