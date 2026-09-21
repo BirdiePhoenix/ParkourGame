@@ -23,10 +23,9 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public void Close() 
-    { 
+    public void Close()
+    {
         panel.SetActive(false);
-        player.paused = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;

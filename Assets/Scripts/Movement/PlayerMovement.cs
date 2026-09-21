@@ -137,7 +137,12 @@ public class PlayerMovement : MonoBehaviour
         {
             moveInput = moveAction.ReadValue<Vector2>();
         }
-        
+
+        if (InputActions.FindActionMap("UI").enabled == true && InputActions.FindActionMap("Player").enabled == true)
+        {
+            InputActions.FindActionMap("Player").Enable();
+            InputActions.FindActionMap("UI").Disable();
+        }
     }
 
     private void FixedUpdate()
@@ -401,20 +406,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void PauseAction_performed(InputAction.CallbackContext obj)
     {
-        //paused = true;
-        //PauseMenu.instance.player = this;
-        //PauseMenu.instance.PauseGame();
-
-        //pauseDisplay.SetActive(true);
-        InputActions.FindActionMap("Player").Disable();
-        InputActions.FindActionMap("UI").Enable();
+        PauseToggle();
     }
 
     private void PauseActionUI_performed(InputAction.CallbackContext obj)
     {
-        //pauseDisplay.SetActive(false);
-        InputActions.FindActionMap("UI").Disable();
-        InputActions.FindActionMap("Player").Enable();
+        PauseToggle();
+    }
+
+    public void PauseToggle()
+    {
+        paused = !paused;
+        switch (paused)
+        {
+            case false:
+                PauseMenu.instance.Close();
+
+                InputActions.FindActionMap("UI").Disable();
+                InputActions.FindActionMap("Player").Enable();
+                break;
+            case true:
+                PauseMenu.instance.player = this;
+                PauseMenu.instance.PauseGame();
+
+                //pauseDisplay.SetActive(true);
+                InputActions.FindActionMap("Player").Disable();
+                InputActions.FindActionMap("UI").Enable();
+                break;
+        }
+
     }
 
     private void InteractAction_performed(InputAction.CallbackContext obj)
