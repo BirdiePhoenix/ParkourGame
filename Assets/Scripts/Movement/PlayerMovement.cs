@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -65,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 lookInput;
 
     public bool paused = false;
+
     
     private void Awake()
     {
@@ -95,8 +97,8 @@ public class PlayerMovement : MonoBehaviour
         slideAction.canceled += SlideAction_canceled;
         
         interactAction.performed += InteractAction_performed;
-        pauseActionPlayer.performed += PauseAction_performed;
-        pauseActionUI.performed += PauseActionUI_performed;
+        //pauseActionPlayer.performed += PauseAction_performed;
+        //pauseActionUI.performed += PauseActionUI_performed;
     }
 
     private void OnDisable()
@@ -105,8 +107,8 @@ public class PlayerMovement : MonoBehaviour
         slideAction.performed -= SlideAction_performed;
         slideAction.canceled -= SlideAction_canceled;
         interactAction.performed -= InteractAction_performed;
-        pauseActionPlayer.performed -= PauseAction_performed;
-        pauseActionUI.performed -= PauseActionUI_performed;
+        //pauseActionPlayer.performed -= PauseAction_performed;
+        //pauseActionUI.performed -= PauseActionUI_performed;
         InputActions.FindActionMap("Player").Disable();
     }
 
@@ -142,6 +144,15 @@ public class PlayerMovement : MonoBehaviour
         {
             InputActions.FindActionMap("Player").Enable();
             InputActions.FindActionMap("UI").Disable();
+        }
+
+        if (pauseActionPlayer.WasPressedThisFrame())
+        {
+            PauseToggle();
+        }
+        if (pauseActionUI.WasPressedThisFrame())
+        {
+            PauseDisable();
         }
     }
 
@@ -404,7 +415,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(Vector3.up * (mouseX * mouseSensitivity));
     }
 
-    private void PauseAction_performed(InputAction.CallbackContext obj)
+    /*private void PauseAction_performed(InputAction.CallbackContext obj)
     {
         PauseToggle();
     }
@@ -412,29 +423,25 @@ public class PlayerMovement : MonoBehaviour
     private void PauseActionUI_performed(InputAction.CallbackContext obj)
     {
         PauseToggle();
-    }
+    }*/
 
     public void PauseToggle()
     {
         paused = !paused;
-        switch (paused)
-        {
-            case false:
-                PauseMenu.instance.Close();
+        PauseMenu.instance.player = this;
+        PauseMenu.instance.PauseGame();
 
-                InputActions.FindActionMap("UI").Disable();
-                InputActions.FindActionMap("Player").Enable();
-                break;
-            case true:
-                PauseMenu.instance.player = this;
-                PauseMenu.instance.PauseGame();
+        InputActions.FindActionMap("Player").Disable();
+        InputActions.FindActionMap("UI").Enable();
+    }
+    public void PauseDisable()
+    {
+        paused = !paused;
+        PauseMenu.instance.player = this;
+        PauseMenu.instance.Close();
 
-                //pauseDisplay.SetActive(true);
-                InputActions.FindActionMap("Player").Disable();
-                InputActions.FindActionMap("UI").Enable();
-                break;
-        }
-
+        InputActions.FindActionMap("UI").Disable();
+        InputActions.FindActionMap("Player").Enable();
     }
 
     private void InteractAction_performed(InputAction.CallbackContext obj)
