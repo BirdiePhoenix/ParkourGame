@@ -24,7 +24,7 @@ MonoBehaviour:
   wallClimbCounterForce: 4
   wallJumpUpForce: 10
   wallJumpSideForce: 12
-  wallCheckDistance: 0.8
+  wallCheckDistance: 0.6
   slideSpeedBoost: 7
   slideFriction: 5
   slideMaxDuration: 1.2
