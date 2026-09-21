@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             StopWallRun();
-            Movement();
+            ExecuteMovement();
         }   
         
     }
@@ -171,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
         wallLeft = Physics.Raycast(transform.position, -transform.right, out leftWallHit, settings.wallCheckDistance, wallMask);
     }
 
-    private void Movement()
+    private void ExecuteMovement()
     {
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         
