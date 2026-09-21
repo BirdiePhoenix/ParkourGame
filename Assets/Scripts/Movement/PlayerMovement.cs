@@ -10,10 +10,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Configuration Asset")] 
     [SerializeField] private MovementSettings settings;
+    //[SerializeField] private GameObject pauseDisplay;
     
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
-    private InputSystem_Actions inputActions;
+    public InputActionAsset InputActions;
     
     public InputAction moveAction;
     public InputAction jumpAction;
@@ -21,7 +22,8 @@ public class PlayerMovement : MonoBehaviour
     public InputAction lookAction;
     public InputAction slideAction;
     public InputAction interactAction;
-    public InputAction pauseAction;
+    public InputAction pauseActionPlayer;
+    public InputAction pauseActionUI;
     
     
     [SerializeField] private Transform groundCheck;
@@ -43,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     
     private float cameraPitch = 0f;
     private bool isGrounded;
-    public bool grounded => isGrounded;
+    
     private bool isSliding = false;
     public bool IsSliding => isSliding;
     private bool isVaulting = false;
@@ -54,6 +56,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 slideDirection;
     private float originalHeight;
     private Vector3 originalCameraLocalPos;
+    
+    public bool wallrunning => isWallRunning;
+    public bool grounded => isGrounded;
+    public bool vaulting => isVaulting;
     
     private Vector2 moveInput;
     private Vector2 lookInput;
@@ -70,7 +76,8 @@ public class PlayerMovement : MonoBehaviour
         lookAction = InputSystem.actions.FindAction("Look");
         slideAction = InputSystem.actions.FindAction("Crouch");
         interactAction = InputSystem.actions.FindAction("Interact");
-        pauseAction = InputSystem.actions.FindAction("Pause");
+        pauseActionPlayer = InputSystem.actions.FindAction("Player/Pause");
+        pauseActionUI = InputSystem.actions.FindAction("UI/Pause");
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -81,25 +88,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        InputActions.FindActionMap("Player").Enable();
         jumpAction.performed += JumpAction_performed;
         
         slideAction.performed += SlideAction_performed;
         slideAction.canceled += SlideAction_canceled;
         
         interactAction.performed += InteractAction_performed;
-        pauseAction.performed += PauseAction_performed;
-    }
-
-    private void PauseAction_performed(InputAction.CallbackContext obj)
-    {
-        paused = true;
-        PauseMenu.instance.player = this;
-        PauseMenu.instance.PauseGame();
-    }
-
-    private void InteractAction_performed(InputAction.CallbackContext obj)
-    {
-        Debug.Log("Interact");
+        pauseActionPlayer.performed += PauseAction_performed;
+        pauseActionUI.performed += PauseActionUI_performed;
     }
 
     private void OnDisable()
@@ -108,7 +105,9 @@ public class PlayerMovement : MonoBehaviour
         slideAction.performed -= SlideAction_performed;
         slideAction.canceled -= SlideAction_canceled;
         interactAction.performed -= InteractAction_performed;
-        pauseAction.performed -= PauseAction_performed;
+        pauseActionPlayer.performed -= PauseAction_performed;
+        pauseActionUI.performed -= PauseActionUI_performed;
+        InputActions.FindActionMap("Player").Disable();
     }
 
     private void Start()
@@ -161,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             StopWallRun();
-            Movement();
+            ExecuteMovement();
         }   
         
     }
@@ -172,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
         wallLeft = Physics.Raycast(transform.position, -transform.right, out leftWallHit, settings.wallCheckDistance, wallMask);
     }
 
-    private void Movement()
+    private void ExecuteMovement()
     {
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         
@@ -398,5 +397,28 @@ public class PlayerMovement : MonoBehaviour
         cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f);
         cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * (mouseX * mouseSensitivity));
-    }   
+    }
+
+    private void PauseAction_performed(InputAction.CallbackContext obj)
+    {
+        //paused = true;
+        //PauseMenu.instance.player = this;
+        //PauseMenu.instance.PauseGame();
+
+        //pauseDisplay.SetActive(true);
+        InputActions.FindActionMap("Player").Disable();
+        InputActions.FindActionMap("UI").Enable();
+    }
+
+    private void PauseActionUI_performed(InputAction.CallbackContext obj)
+    {
+        //pauseDisplay.SetActive(false);
+        InputActions.FindActionMap("UI").Disable();
+        InputActions.FindActionMap("Player").Enable();
+    }
+
+    private void InteractAction_performed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Interact");
+    }
 }

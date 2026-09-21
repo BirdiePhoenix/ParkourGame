@@ -15,17 +15,17 @@ MonoBehaviour:
   maxSpeed: 8
   acceleration: 100
   groundDeceleration: 80
-  jumpForce: 5
+  jumpForce: 5.5
   airControl: 0.4
-  vaultMaxDistance: 1.5
-  vaultSpeed: 0.2
-  wallRunForce: 500
+  vaultMaxDistance: 2
+  vaultSpeed: 0.15
+  wallRunForce: 400
   maxWallRunSpeed: 12
   wallClimbCounterForce: 4
-  wallJumpUpForce: 15
-  wallJumpSideForce: 18
+  wallJumpUpForce: 10
+  wallJumpSideForce: 12
   wallCheckDistance: 0.8
-  slideSpeedBoost: 5
+  slideSpeedBoost: 7
   slideFriction: 5
   slideMaxDuration: 1.2
   crouchHeight: 1
