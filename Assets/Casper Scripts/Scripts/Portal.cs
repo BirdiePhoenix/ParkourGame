@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
@@ -16,12 +17,16 @@ public class Portal : MonoBehaviour
     public bool crystalThreeActive;
     public bool crystalFourActive;
 
+    public List<GameObject> newMap3 = new List<GameObject>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         portal.SetActive(false);
         crystalOne.SetActive(false); crystalTwo.SetActive(false); crystalThree.SetActive(false); crystalFour.SetActive(false);
         crystalOneActive = false; crystalTwoActive = false; crystalThreeActive = false; crystalFourActive = false;
+
+        newMap3.ForEach(x => x.SetActive(false));
     }
 
     // Update is called once per frame
@@ -39,6 +44,7 @@ public class Portal : MonoBehaviour
         if (crystalTwoActive)
         {
             crystalTwo.SetActive(true);
+            newMap3.ForEach(x => x.SetActive(true));
         }
         else
         {
