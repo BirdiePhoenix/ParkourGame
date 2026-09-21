@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 public class PlayerDie : MonoBehaviour
 {
     public List<GameObject> newMap = new List<GameObject>();
+    public List<GameObject> newMap2 = new List<GameObject>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         newMap.ForEach(x => x.SetActive(false));
+        newMap2.ForEach(x => x.SetActive(false));
     }
 
     // Update is called once per frame
@@ -33,6 +35,11 @@ public class PlayerDie : MonoBehaviour
         if (other.CompareTag("Crystal1"))
         {
            newMap.ForEach(x => x.SetActive(true));
+        }
+
+        if (other.CompareTag("Crystal2"))
+        {
+            newMap2.ForEach(x => x.SetActive(true));
         }
     }
 }
