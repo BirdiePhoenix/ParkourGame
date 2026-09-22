@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit leftWallHit, rightWallHit;
     private bool wallLeft, wallRight;
     
+    private Vector3 groundNormal = Vector3.up;
+    
     private float cameraPitch = 0f;
     private bool isGrounded;
     
@@ -122,8 +124,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (paused != true) { CameraHandling(); }
         
-        isGrounded = Physics.CheckSphere(groundCheck.position, 0.2f, LayerMask.GetMask("Ground"));
-        
         CheckForWall();
 
         if (isSliding)
@@ -158,6 +158,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CheckGround();
+        
         if (isVaulting)
             return;
 
@@ -179,6 +181,33 @@ public class PlayerMovement : MonoBehaviour
             ExecuteMovement();
         }   
         
+    }
+
+    private void CheckGround()
+    {
+
+        Vector3 groundCheckPosition = new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y + 0.1f,
+            capsuleCollider.bounds.center.z);
+        
+        isGrounded = Physics.CheckSphere(
+            groundCheckPosition,
+            0.2f,
+            LayerMask.GetMask("Ground"));
+
+        if (isGrounded &&
+            Physics.Raycast(
+                capsuleCollider.bounds.center,
+                Vector3.down,
+                out RaycastHit hit,
+                capsuleCollider.bounds.extents.y + 0.3f,
+                LayerMask.GetMask("Ground")))
+        {
+            groundNormal = hit.normal;
+        }
+        else
+        {
+            groundNormal = Vector3.up;
+        }
     }
 
     private void CheckForWall()
@@ -373,16 +402,31 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
+        float slopeAngle = Vector3.Angle(groundNormal, Vector3.up);
+        Debug.Log($"Ground Normal: {groundNormal}, Slope Angle: {slopeAngle}");
+
+        bool isOnSlope = slopeAngle > 1f;
+
         float speedToDrop = settings.slideFriction * Time.fixedDeltaTime;
 
-        if (currentHorizontalVelocity.magnitude < speedToDrop)
+        if (currentHorizontalVelocity.magnitude >= speedToDrop)
+        {
+            rb.linearVelocity -= currentHorizontalVelocity.normalized * speedToDrop;
+            
+        }
+        else if (!isOnSlope)
         {
             rb.linearVelocity =  new Vector3(0f, rb.linearVelocity.y, 0f);
             StopSlide();
+            return;
         }
-        else
+
+        if (isOnSlope)
         {
-            rb.linearVelocity += currentHorizontalVelocity.normalized * -speedToDrop;
+            Vector3 downHillDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+            
+            rb.AddForce(downHillDirection * settings.slideSlopeAcceleration, ForceMode.Acceleration);
+            Debug.Log($"Slope: {slopeAngle}, Downhill: {downHillDirection}");
         }
         
         Vector3 steeringInput = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;

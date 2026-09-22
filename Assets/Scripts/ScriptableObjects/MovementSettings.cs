@@ -28,4 +28,5 @@ public class MovementSettings : ScriptableObject
     public float slideFriction = 5f;
     public float slideMaxDuration = 1.2f;
     public float crouchHeight = 1f;
+    public float slideSlopeAcceleration = 15f;
 }
