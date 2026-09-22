@@ -26,27 +26,57 @@ public class PlayerDie : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Spike"))
         {
-           SceneManager.LoadScene(2);
+            Respawn();
         }
 
         if (other.gameObject.CompareTag("Deathbox"))
         {
-            SceneManager.LoadScene(2);
+            Respawn();
         }
 
         if (other.CompareTag("Crystal1"))
         {
            newMap.ForEach(x => x.SetActive(true));
+           CheckpointManager.Instance.SetCheckpoint(1);
         }
 
         if (other.CompareTag("Crystal2"))
         {
             newMap2.ForEach(x => x.SetActive(true));
+            CheckpointManager.Instance.SetCheckpoint(3);
         }
 
         if (other.CompareTag("Crystal3"))
         {
             newMap3.ForEach((x) => x.SetActive(true));
+            CheckpointManager.Instance.SetCheckpoint(5);
         }
     }
+    public void Respawn()
+    {
+        Transform spawnPoint = CheckpointManager.Instance.GetCheckpoint();
+
+        if (spawnPoint == null)
+        {
+            Debug.LogError("No checkpoint spawn point found!");
+            return;
+        }
+
+        // Stop the player's movement if you have a Rigidbody
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        // Move player
+        transform.position = spawnPoint.position;
+        transform.rotation = spawnPoint.rotation;
+
+        Debug.Log("Player respawned at checkpoint " +
+                  CheckpointManager.Instance.currentCheckpoint);
+    }
 }
+

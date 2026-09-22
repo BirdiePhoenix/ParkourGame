@@ -38,6 +38,7 @@ public class Portal : MonoBehaviour
         {
             crystalOne.SetActive (true);
             spike.SetActive (false);
+            CheckpointManager.Instance.SetCheckpoint(2);
         }
         else
         {
@@ -47,6 +48,7 @@ public class Portal : MonoBehaviour
         {
             crystalTwo.SetActive(true);
             newMap3.ForEach(x => x.SetActive(true));
+            CheckpointManager.Instance.SetCheckpoint(4);
         }
         else
         {
@@ -56,6 +58,7 @@ public class Portal : MonoBehaviour
         {
             crystalThree.SetActive (true);
             newMap4.ForEach(x => x.SetActive(true));
+            CheckpointManager.Instance.SetCheckpoint(6);
         }
         else
         {
@@ -64,6 +67,7 @@ public class Portal : MonoBehaviour
         if (crystalFourActive)
         {
             crystalFour.SetActive (true);
+            CheckpointManager.Instance.SetCheckpoint(8);
         }
         else
         {

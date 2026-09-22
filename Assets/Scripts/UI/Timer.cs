@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class Timer : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
+    public PlayerDie pd;
 
     int MinTime;
     int SecTime;
@@ -41,6 +42,7 @@ public class Timer : MonoBehaviour
         start.PickUpCrystalStart = 0;
         text.color = Color.crimson;
         time = 0;
+        pd.Respawn();
     }
 
     public void StartTimer(float minutes)
