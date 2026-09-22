@@ -15,7 +15,10 @@ public class PlayerMovement : MonoBehaviour
     
     private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
+    private Vector3 originalCapsuleCenter;
+    
     public InputActionAsset InputActions;
+    
     
     public InputAction moveAction;
     public InputAction jumpAction;
@@ -25,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
     public InputAction interactAction;
     public InputAction pauseActionPlayer;
     public InputAction pauseActionUI;
-    
     
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform cameraTransform;
@@ -48,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     
     private float cameraPitch = 0f;
     private bool isGrounded;
+    private float slideAirTimer;
     
     private bool isSliding = false;
     public bool IsSliding => isSliding;
@@ -87,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
 
         originalHeight = capsuleCollider.height;
+        originalCapsuleCenter = capsuleCollider.center;
         originalCameraLocalPos = cameraTransform.localPosition;
     }
 
@@ -125,15 +129,6 @@ public class PlayerMovement : MonoBehaviour
         if (paused != true) { CameraHandling(); }
         
         CheckForWall();
-
-        if (isSliding)
-        {
-            slideTimer -= Time.deltaTime;
-            if (slideTimer <= 0f || !isGrounded)
-            {
-                StopSlide();
-            }
-        }
         
         if (moveAction != null)
         {
@@ -160,6 +155,9 @@ public class PlayerMovement : MonoBehaviour
     {
         CheckGround();
         
+        ApplyGroundAdhesion();
+        
+        
         if (isVaulting)
             return;
 
@@ -185,29 +183,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckGround()
     {
+        float radius = capsuleCollider.radius * 0.9f;
 
-        Vector3 groundCheckPosition = new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y + 0.1f,
-            capsuleCollider.bounds.center.z);
-        
-        isGrounded = Physics.CheckSphere(
-            groundCheckPosition,
-            0.2f,
-            LayerMask.GetMask("Ground"));
+        Vector3 capsuleCenter =
+            transform.TransformPoint(capsuleCollider.center);
 
-        if (isGrounded &&
-            Physics.Raycast(
-                capsuleCollider.bounds.center,
-                Vector3.down,
-                out RaycastHit hit,
-                capsuleCollider.bounds.extents.y + 0.3f,
-                LayerMask.GetMask("Ground")))
-        {
-            groundNormal = hit.normal;
-        }
-        else
-        {
-            groundNormal = Vector3.up;
-        }
+        float halfHeight =
+            capsuleCollider.height * 0.5f;
+
+        Vector3 capsuleBottom =
+            capsuleCenter - transform.up * halfHeight;
+
+        Vector3 castOrigin =
+            capsuleBottom + transform.up * (radius + 0.05f);
+
+        isGrounded = Physics.SphereCast(
+            castOrigin,
+            radius,
+            -transform.up,
+            out RaycastHit hit,
+            0.15f,
+            LayerMask.GetMask("Ground"),
+            QueryTriggerInteraction.Ignore);
+
+        groundNormal = isGrounded ? hit.normal : Vector3.up;
     }
 
     private void CheckForWall()
@@ -218,22 +217,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void ExecuteMovement()
     {
+        if (isSliding)
+        {
+            Debug.LogError("ExecuteMovement called while sliding!");
+        }
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
         
         Vector3 targetDirection = (transform.forward * moveInput.y + transform.right * moveInput.x);
 
         float inputMagnitude = Mathf.Clamp01(targetDirection.magnitude);
+
+        if (isGrounded)
+        {
+            targetDirection = Vector3.ProjectOnPlane(targetDirection, groundNormal).normalized;
+        }
+        else
+        {
+            targetDirection.Normalize();
+        }
         
         if (targetDirection.sqrMagnitude < 0.001f && isGrounded)
         {
+            Vector3 movementVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, groundNormal);
+            
             float speedToDrop = settings.groundDeceleration * Time.deltaTime;
             if (currentHorizontalVelocity.magnitude <= speedToDrop)
             {
-                rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+                rb.linearVelocity -= movementVelocity;
             }
             else
             {
-                rb.linearVelocity += currentHorizontalVelocity.normalized * -speedToDrop;
+                rb.linearVelocity -= movementVelocity * speedToDrop;
             }
 
             return;
@@ -368,10 +382,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentHorizontalVelocity.magnitude > (settings.maxSpeed * 0.7f) && isGrounded)
         {
+            Debug.Log("STARTING SLIDE");
             StartSlide(currentHorizontalVelocity);
         }
         else
         {
+            Debug.Log("CROUCHING");
             SetCapsuleHeight(settings.crouchHeight);
         }
     }
@@ -390,47 +406,94 @@ public class PlayerMovement : MonoBehaviour
     {
         isSliding = true;
         slideTimer = settings.slideMaxDuration;
-        
-        slideDirection = currentHorizontalVelocity.normalized;
+        slideAirTimer = 0f;
+
+        slideDirection =
+            Vector3.ProjectOnPlane(
+                currentHorizontalVelocity,
+                groundNormal).normalized;
         
         SetCapsuleHeight(settings.crouchHeight);
+
+        rb.AddForce(
+            slideDirection * settings.slideSpeedBoost,
+            ForceMode.VelocityChange);
+    }
+    
+    private void ApplyGroundAdhesion()
+    {
+        if (!isGrounded)
+        {
+            return;
+        }
         
-        rb.AddForce(slideDirection * settings.slideSpeedBoost, ForceMode.VelocityChange);
+        float velocityAwayFromGround =
+            Vector3.Dot(rb.linearVelocity, groundNormal);
+
+        if (velocityAwayFromGround > 0f)
+            return;
+        
+        rb.AddForce(
+            -groundNormal * settings.groundAdhesion,
+            ForceMode.Acceleration);
     }
 
     private void ExecuteSlideMovement()
     {
+        if (isSliding)
+        {
+            slideTimer -= Time.deltaTime;
+
+            if (isGrounded)
+            {
+                slideAirTimer = 0f;
+            }
+            else
+            {
+                slideAirTimer += Time.deltaTime;
+            }
+
+            if (slideTimer <= 0f || slideAirTimer >= 0.15f)
+            {
+                StopSlide();
+            }
+        }
+
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-
-        float slopeAngle = Vector3.Angle(groundNormal, Vector3.up);
-        Debug.Log($"Ground Normal: {groundNormal}, Slope Angle: {slopeAngle}");
-
-        bool isOnSlope = slopeAngle > 1f;
-
+        
         float speedToDrop = settings.slideFriction * Time.fixedDeltaTime;
 
-        if (currentHorizontalVelocity.magnitude >= speedToDrop)
+        if (currentHorizontalVelocity.magnitude > speedToDrop)
         {
             rb.linearVelocity -= currentHorizontalVelocity.normalized * speedToDrop;
-            
-        }
-        else if (!isOnSlope)
-        {
-            rb.linearVelocity =  new Vector3(0f, rb.linearVelocity.y, 0f);
-            StopSlide();
-            return;
-        }
-
-        if (isOnSlope)
-        {
-            Vector3 downHillDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-            
-            rb.AddForce(downHillDirection * settings.slideSlopeAcceleration, ForceMode.Acceleration);
-            Debug.Log($"Slope: {slopeAngle}, Downhill: {downHillDirection}");
         }
         
-        Vector3 steeringInput = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized;
-        rb.AddForce(steeringInput * (settings.acceleration * 0.15f), ForceMode.Force);
+        Vector3 downhill =
+            Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+
+        float slopeAngle =
+            Vector3.Angle(groundNormal, Vector3.up);
+
+        if (slopeAngle > 1f)
+        {
+            rb.AddForce(
+                downhill * settings.slideSlopeAcceleration,
+                ForceMode.Acceleration);
+        }
+        
+        Vector3 steeringInput =
+            transform.forward * moveInput.y +
+            transform.right * moveInput.x;
+
+        if (steeringInput.sqrMagnitude > 0.001f)
+        {
+            steeringInput =
+                Vector3.ProjectOnPlane(steeringInput, groundNormal).normalized;
+        
+            rb.AddForce(
+                steeringInput * (settings.acceleration * 0.15f),
+                ForceMode.Force);
+        }
     }
 
     private void StopSlide()
@@ -441,9 +504,14 @@ public class PlayerMovement : MonoBehaviour
     private void SetCapsuleHeight(float targetHeight)
     {
         capsuleCollider.height = targetHeight;
-        
+
         float heightDifference = originalHeight - targetHeight;
-        cameraTransform.localPosition = originalCameraLocalPos - new Vector3(0f, heightDifference * 0.5f, 0f);
+
+        capsuleCollider.center =
+            originalCapsuleCenter - new Vector3(0f, heightDifference * 0.5f, 0f);
+
+        cameraTransform.localPosition =
+            originalCameraLocalPos - new Vector3(0f, heightDifference * 0.5f, 0f);
     }
 
     private void CameraHandling()
@@ -491,5 +559,10 @@ public class PlayerMovement : MonoBehaviour
     private void InteractAction_performed(InputAction.CallbackContext obj)
     {
         Debug.Log("Interact");
+    }
+    
+    private float GetCapsuleBottom()
+    {
+        return capsuleCollider.center.y - capsuleCollider.height * 0.5f;
     }
 }

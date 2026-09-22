@@ -8,6 +8,7 @@ public class MovementSettings : ScriptableObject
     public float acceleration = 20f;
     public float groundDeceleration = 20f;
     public float jumpForce = 1000f;
+    public float groundAdhesion = 20f;
     [Range(0f, 1f)]
     public float airControl = 0.4f;
     
@@ -28,5 +29,5 @@ public class MovementSettings : ScriptableObject
     public float slideFriction = 5f;
     public float slideMaxDuration = 1.2f;
     public float crouchHeight = 1f;
-    public float slideSlopeAcceleration = 15f;
+    public float slideSlopeAcceleration = 20f;
 }
