@@ -16,6 +16,7 @@ MonoBehaviour:
   acceleration: 100
   groundDeceleration: 80
   jumpForce: 5.5
+  groundAdhesion: 20
   airControl: 0.4
   vaultMaxDistance: 2
   vaultSpeed: 0.15
@@ -29,3 +30,4 @@ MonoBehaviour:
   slideFriction: 5
   slideMaxDuration: 1.2
   crouchHeight: 1
+  slideSlopeAcceleration: 20
