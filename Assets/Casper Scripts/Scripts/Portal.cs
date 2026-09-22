@@ -18,6 +18,7 @@ public class Portal : MonoBehaviour
     public bool crystalFourActive;
 
     public List<GameObject> newMap3 = new List<GameObject>();
+    public List<GameObject> newMap4 = new List<GameObject>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +27,7 @@ public class Portal : MonoBehaviour
         crystalOne.SetActive(false); crystalTwo.SetActive(false); crystalThree.SetActive(false); crystalFour.SetActive(false);
         crystalOneActive = false; crystalTwoActive = false; crystalThreeActive = false; crystalFourActive = false;
 
+        newMap4.ForEach(x => x.SetActive(false));
         newMap3.ForEach(x => x.SetActive(false));
     }
 
@@ -53,6 +55,7 @@ public class Portal : MonoBehaviour
         if (crystalThreeActive)
         {
             crystalThree.SetActive (true);
+            newMap4.ForEach(x => x.SetActive(true));
         }
         else
         {
