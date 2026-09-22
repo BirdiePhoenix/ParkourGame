@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class test_move_interakt_start : MonoBehaviour
 {
+    [SerializeField] private MusicManager musicManager;
     public float PickUpCrystalStart = 0;
     public test_move_interakt_start_end test_move_interakt_start_end;
     public Timer timer;
@@ -37,6 +38,7 @@ public class test_move_interakt_start : MonoBehaviour
             Timer timer = GameObject.Find("GameManager").GetComponent<Timer>();
             if (timer != null) { timer.StartTimer(timeMins); }
             PickUpCrystalStart = 1;
+            musicManager.FadeMusic();
         }
 
     }

@@ -9,6 +9,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] protected FaderEnum faderType;
     [SerializeField] private float faderSpeed = 0.5f;
     protected bool isFading = false;
+    private bool isPlaying = false;
 
     public enum FaderEnum
     {
@@ -23,7 +24,17 @@ public class MusicManager : MonoBehaviour
 
     public void FadeMusic()
     {
-        
+        if (!isPlaying)
+        {
+            isPlaying = true;
+            faderType = FaderEnum.In;
+        }
+        else
+        {
+            isPlaying = false;
+            faderType = FaderEnum.Out;
+        }
+
         switch (faderType)
         {
             case FaderEnum.In:

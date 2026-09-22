@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class test_move_interakt_start_end : MonoBehaviour
 {
+    [SerializeField] MusicManager musicManager;
     public float PickUpCrystalEnd = 0;
     public float PartOfTheGame = 0;
     public int variable = 0;
@@ -61,6 +62,7 @@ public class test_move_interakt_start_end : MonoBehaviour
                     PartOfTheGame += 1;
                     PickUpCrystalEnd = 2;
                     Debug.Log("good game");
+                    musicManager.FadeMusic();
                 }
                 else
                 {
@@ -69,6 +71,7 @@ public class test_move_interakt_start_end : MonoBehaviour
                     PickUpCrystalEnd = 1;
                     variable += 1;
                     Debug.Log("good job");
+                    musicManager.FadeMusic();
                 }
             }
         }  
