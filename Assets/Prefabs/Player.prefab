@@ -330,6 +330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4075462528756793962}
   - component: {fileID: 5663272249097085706}
+  - component: {fileID: 508004587841275032}
   - component: {fileID: 4476301821493474545}
   - component: {fileID: 4038364330384939214}
   - component: {fileID: 5639306628946724655}
@@ -467,6 +468,24 @@ MonoBehaviour:
   eyeLevel: {fileID: 7500845214515422374}
   waistLevel: {fileID: 4117897916958779439}
   paused: 0
+--- !u!114 &508004587841275032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6353163482049776830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9fd94140720434584e6e5c3d0428c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCameraEffects
+  playerCamera: {fileID: 1119088487682333089}
+  playerRigidbody: {fileID: 4476301821493474545}
+  baseFOV: 70
+  maxFOV: 80
+  speedForMaxFOV: 15
+  fovChangeSpeed: 5
 --- !u!54 &4476301821493474545
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerMovementSettings
   m_EditorClassIdentifier: Assembly-CSharp::MovementSettings
   maxSpeed: 8
-  acceleration: 100
+  acceleration: 80
   groundDeceleration: 80
   jumpForce: 5.5
   groundAdhesion: 20
@@ -30,4 +30,4 @@ MonoBehaviour:
   slideFriction: 5
   slideMaxDuration: 1.2
   crouchHeight: 1
-  slideSlopeAcceleration: 20
+  slideSlopeAcceleration: 60
