@@ -7467,6 +7467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
+  musicManager: {fileID: 0}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -12108,6 +12109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
+  musicManager: {fileID: 0}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -13318,6 +13320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
+  musicManager: {fileID: 0}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -13465,11 +13468,6 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f07e7de00ceb9348b34b76c8692deba, type: 3}
   m_PrefabInstance: {fileID: 1515959123}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1251622138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f76478158a638184fa28486151346099, type: 3}
-  m_PrefabInstance: {fileID: 1069502790}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1259934804
 GameObject:
@@ -16900,6 +16898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
+  musicManager: {fileID: 0}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -17085,11 +17084,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603707529}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1606444228 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f07e7de00ceb9348b34b76c8692deba, type: 3}
-  m_PrefabInstance: {fileID: 2140316008}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1633324894
 GameObject:
   m_ObjectHideFlags: 0
@@ -17287,9 +17281,6 @@ MonoBehaviour:
   - {fileID: 1442351256}
   - {fileID: 1024242118}
   - {fileID: 1366773145}
-  - {fileID: 593668823}
-  - {fileID: 1606444228}
-  - {fileID: 1251622138}
   newMap4:
   - {fileID: 1426272529}
   - {fileID: 1673753948}
