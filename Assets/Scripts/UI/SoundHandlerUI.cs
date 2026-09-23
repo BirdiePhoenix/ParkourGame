@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
+using UnityEngine.Assemblies;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 
@@ -8,9 +11,15 @@ public class SoundHandlerUI : MonoBehaviour
 {
     private AudioClip[] _obtainableSound; 
     private static SoundHandlerUI instance;
+    private InputAction pauseActionUI;
+    private GameObject _player;
+    private GameObject _camera;
+    private bool paused = false;
+
     
     private void Awake()
     {
+        pauseActionUI = InputSystem.actions.FindAction("UI/Pause");
         //keeps object between scenes
         if (instance != null && instance != this)
         {
@@ -21,7 +30,7 @@ public class SoundHandlerUI : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         
         //loads all sfx into the array
-        _obtainableSound = Resources.LoadAll<AudioClip>("SFX");
+        _obtainableSound = Resources.LoadAll<AudioClip>("SFX/UI");
     }
     
     //if scene switch then
@@ -37,11 +46,16 @@ public class SoundHandlerUI : MonoBehaviour
 
     private void Start()
     {
+        _player = GameObject.Find("Player");
+        _camera  = GameObject.Find("Main Camera");
         OnSceneLoaded();
     }
 
     private void OnSceneLoaded(Scene scene = new Scene(), LoadSceneMode mode = new LoadSceneMode())
     {
+        if (_camera != null)
+            gameObject.transform.position = _camera.transform.position;
+        
         //stores all new buttons in an array
         Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include);
         //plays diffrent sound depending on button
@@ -69,6 +83,11 @@ public class SoundHandlerUI : MonoBehaviour
                     button.onClick.AddListener(() => ClickedButton("Pause"));
                     break;
                 }
+                case "ResumeButton":
+                {
+                    button.onClick.AddListener(() => ClickedButton("Pause"));
+                    break;
+                }
                 default:
                 {
                     button.onClick.AddListener(() => ClickedButton("Generic_click"));
@@ -78,23 +97,48 @@ public class SoundHandlerUI : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_player  == null)
+            
+            return;
+        gameObject.transform.position = _player.transform.position;
+        if (_player.GetComponent<PlayerMovement>().paused &&  !paused)
+        {
+            paused = true;
+            ClickedButton("Pause");
+        }
+
+        if (!_player.GetComponent<PlayerMovement>().paused)
+        {
+            paused = false;
+        }
+    }
+
     private AudioClip FindClipInArray(string clipName)
     {
         return Array.Find(_obtainableSound, clip => clip.name == clipName);
     }
     private GameObject FindCamera()
     {
-        return GameObject.Find("Main Camera");
+        return GameObject.Find("mainCamera");
     }
     private void ClickedButton(string clipName)
     {
         //fins clip and camera
-        AudioClip clip = FindClipInArray(clipName);
+        AudioClip clip = null;
+        foreach (AudioClip sfx in _obtainableSound)
+        {
+            if (sfx.name == clipName)
+            {
+                clip = sfx;
+            }
+        }
         GameObject camera = FindCamera();
         if (clip == null || camera == null)
             return;
         //if camera dosent have an audiosource then add it
-        AudioSource source = camera.GetComponent<AudioSource>();
+        AudioSource source = gameObject.GetComponent<AudioSource>();
         if (source == null)
             source = camera.AddComponent<AudioSource>();
 

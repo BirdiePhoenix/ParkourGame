@@ -286,7 +286,7 @@ public class SoundHandler : MonoBehaviour
         }
         
         //if it is touching ground or moving then plays the correct sound depending on walk or sprint
-        PlayerSoundType soundType = _sprinting ? PlayerSoundType.Sprint : PlayerSoundType.Walk;
+        PlayerSoundType soundType = _sprinting ? PlayerSoundType.Sprint : PlayerSoundType.Sprint;
         PlayRandomSoundOfType(soundType, true);
     }
 
