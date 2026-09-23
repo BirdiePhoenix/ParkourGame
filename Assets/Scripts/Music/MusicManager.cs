@@ -61,7 +61,10 @@ public class MusicManager : MonoBehaviour
         if (!hasCrystal)
         {
             crystalMusic2.volume += 0.1f;
-            hasCrystal = true;
+            if(crystalMusic2.volume == 1)
+            {
+                hasCrystal = true;
+            }
         }
 
         if(crystalMusic.volume < 1)
