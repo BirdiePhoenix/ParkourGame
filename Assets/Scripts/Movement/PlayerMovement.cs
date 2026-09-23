@@ -141,14 +141,7 @@ public class PlayerMovement : MonoBehaviour
             InputActions.FindActionMap("UI").Disable();
         }
 
-        if (pauseActionPlayer.WasPressedThisFrame())
-        {
-            PauseToggle();
-        }
-        if (pauseActionUI.WasPressedThisFrame())
-        {
-            PauseDisable();
-        }
+        //
     }
 
     private void FixedUpdate()
@@ -535,7 +528,7 @@ public class PlayerMovement : MonoBehaviour
     private void PauseActionUI_performed(InputAction.CallbackContext obj)
     {
         PauseToggle();
-    }*/
+    }
 
     public void PauseToggle()
     {
@@ -554,7 +547,7 @@ public class PlayerMovement : MonoBehaviour
 
         InputActions.FindActionMap("UI").Disable();
         InputActions.FindActionMap("Player").Enable();
-    }
+    }*/
 
     private void InteractAction_performed(InputAction.CallbackContext obj)
     {

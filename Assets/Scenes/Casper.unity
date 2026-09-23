@@ -6429,7 +6429,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   panel: {fileID: 2146724159}
+  InputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   player: {fileID: 0}
+  pauseActionPlayer:
+    m_Name: Pause Action Player
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b2c75248-36d4-46d2-84cd-492ede59661a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+    m_Priority: 0
+  pauseActionUI:
+    m_Name: Pause Action UI
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 44b6927a-1409-495e-b2c4-3e6e8fc98b24
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+    m_Priority: 0
 --- !u!114 &509020331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6960,7 +6981,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 509020330}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: Close
+        m_MethodName: PauseDisable
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16190,7 +16211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7c4010d96e3c24fbcea2c98b096490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckpointPoint
-  checkpointNumber: 0
 --- !u!114 &1523894180
 MonoBehaviour:
   m_ObjectHideFlags: 0
