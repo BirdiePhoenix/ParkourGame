@@ -6,20 +6,17 @@ public class MusicManager : MonoBehaviour
 {
     [SerializeField] AudioSource bgm;
     [SerializeField] AudioSource crystalMusic;
+    [SerializeField] AudioSource crystalMusic2;
     [SerializeField] protected FaderEnum faderType;
     [SerializeField] private float faderSpeed = 0.5f;
     protected bool isFading = false;
     private bool isPlaying = false;
+    private bool hasCrystal = false;
 
     public enum FaderEnum
     {
         In,
         Out
-    }
-
-    public void SetFaderType(FaderEnum _faderType)
-    {
-        faderType = _faderType;
     }
 
     public void FadeMusic()
@@ -59,7 +56,13 @@ public class MusicManager : MonoBehaviour
             isFading = true;
         }
         yield return new WaitForSeconds(faderSpeed);
+        
         crystalMusic.volume += 0.1f;
+        if (!hasCrystal)
+        {
+            crystalMusic2.volume += 0.1f;
+            hasCrystal = true;
+        }
 
         if(crystalMusic.volume < 1)
         {
