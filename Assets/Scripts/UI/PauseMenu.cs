@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour
 
     public InputActionAsset InputActions;
 
+    float fix2 = 0;
+
     public static PauseMenu instance;
     public PlayerMovement player;
     public InputAction pauseActionPlayer;
@@ -15,6 +17,7 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
+        float fix2 = 0;
         player = GameObject.Find("Player").GetComponent<PlayerMovement>();
         instance = this;
         pauseActionPlayer = InputSystem.actions.FindAction("Player/Pause");
@@ -58,13 +61,20 @@ public class PauseMenu : MonoBehaviour
 
         InputActions.FindActionMap("Player").Disable();
         InputActions.FindActionMap("UI").Enable();
+        fix2 = 1;
+        Debug.Log("1");
     }
     public void PauseDisable()
     {
-        player.paused = !player.paused;
-        Close();
+        if (fix2 == 1)
+        {
+            player.paused = !player.paused;
+            Close();
 
-        InputActions.FindActionMap("UI").Disable();
-        InputActions.FindActionMap("Player").Enable();
+            InputActions.FindActionMap("UI").Disable();
+            InputActions.FindActionMap("Player").Enable();
+            fix2 = 0;
+            Debug.Log("2");
+        }
     }
 }

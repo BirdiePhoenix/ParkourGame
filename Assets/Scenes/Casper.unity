@@ -12112,7 +12112,7 @@ MonoBehaviour:
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
   mesh: {fileID: 1003204989}
-  timeMins: 0.1
+  timeMins: 0.5
 --- !u!1 &1024242118 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f07e7de00ceb9348b34b76c8692deba, type: 3}
