@@ -22551,7 +22551,7 @@ GameObject:
   - component: {fileID: 1523894177}
   - component: {fileID: 1523894178}
   - component: {fileID: 1523894180}
-  - component: {fileID: 1523894179}
+  - component: {fileID: 1523894181}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -22602,18 +22602,6 @@ MonoBehaviour:
   text: {fileID: 453864114}
   pd: {fileID: 1683382901}
   time: 0
---- !u!114 &1523894179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523894175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7c4010d96e3c24fbcea2c98b096490, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CheckpointPoint
 --- !u!114 &1523894180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22636,6 +22624,19 @@ MonoBehaviour:
   crystal4PickupSpawn: {fileID: 1149727813}
   crystal4PortalSpawn: {fileID: 1259934805}
   currentCheckpoint: 0
+--- !u!114 &1523894181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523894175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a003eec002fb194ba8b26a1af852080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundHandler
+  playerObject: {fileID: 1683382894}
 --- !u!1001 &1534294034
 PrefabInstance:
   m_ObjectHideFlags: 0
