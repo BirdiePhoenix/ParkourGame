@@ -1,6 +1,7 @@
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PauseMenu : MonoBehaviour
 
     public InputActionAsset InputActions;
 
-    float fix2 = 0;
+    public float fix2 = 0;
 
     public static PauseMenu instance;
     public PlayerMovement player;
@@ -17,7 +18,7 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
-        float fix2 = 0;
+        fix2 = 0;
         player = GameObject.Find("Player").GetComponent<PlayerMovement>();
         instance = this;
         pauseActionPlayer = InputSystem.actions.FindAction("Player/Pause");
@@ -76,5 +77,15 @@ public class PauseMenu : MonoBehaviour
             fix2 = 0;
             Debug.Log("2");
         }
+    }
+    public void ToMainMenu()
+    {
+        Time.timeScale = 1f;
+        fix2 = 0;
+        player.paused = !player.paused;
+
+        InputActions.FindActionMap("UI").Disable();
+        InputActions.FindActionMap("Player").Enable();
+        SceneManager.LoadScene(0);
     }
 }
