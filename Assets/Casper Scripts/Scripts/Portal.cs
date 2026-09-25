@@ -4,6 +4,7 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     public GameObject spike;
+    public Gamemanager gamemanager;
 
     public GameObject crystalOne;
     public GameObject crystalTwo;
@@ -31,6 +32,8 @@ public class Portal : MonoBehaviour
         newMap4.ForEach(x => x.SetActive(false));
         newMap3.ForEach(x => x.SetActive(false));
         newMap2.ForEach(x => x.SetActive(false));
+
+        gamemanager = GameObject.Find("GameManager").GetComponent<Gamemanager>();
     }
 
     // Update is called once per frame
@@ -84,6 +87,16 @@ public class Portal : MonoBehaviour
         else
         {
             portal.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (crystalOneActive && crystalTwoActive && crystalThreeActive && crystalFourActive)
+        {
+            string timetext = gamemanager.GetTime();
+            FinalScreen finalScreen = GameObject.Find("FinalScreenActual").GetComponent<FinalScreen>();
+            finalScreen.Awaken(timetext);
         }
     }
 }
