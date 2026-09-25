@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float gamePadSensitivity = 0.1f;
+    [SerializeField] private float coyoteTime = 0.15f;
+    [SerializeField] private float jumpBufferTime = 0.15f;
     
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private LayerMask wallMask;
@@ -51,6 +53,10 @@ public class PlayerMovement : MonoBehaviour
     private float cameraPitch = 0f;
     private bool isGrounded;
     private float slideAirTimer;
+    private bool wasGrounded;
+    private float lastAirborneVerticalVelocity;
+    private float coyoteTimer;
+    private float jumpBufferTimer;
     
     private bool isSliding = false;
     public bool IsSliding => isSliding;
@@ -66,11 +72,15 @@ public class PlayerMovement : MonoBehaviour
     public bool wallrunning => isWallRunning;
     public bool grounded => isGrounded;
     public bool vaulting => isVaulting;
+    public bool WallLeft => wallLeft;
+    public bool WallRight => wallRight;
     
     private Vector2 moveInput;
     private Vector2 lookInput;
 
     public bool paused = false;
+    
+    public event System.Action<float> Landed;
 
     
     private void Awake()
@@ -147,7 +157,40 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
+        wasGrounded = isGrounded;
+
+        if (!isGrounded)
+        {
+            lastAirborneVerticalVelocity = rb.linearVelocity.y;
+        }
+        
         CheckGround();
+
+        if (isGrounded)
+        {
+            coyoteTimer = coyoteTime;
+        }
+        else
+        {
+            coyoteTimer -= Time.fixedDeltaTime;
+        }
+
+        if (!wasGrounded && isGrounded)
+        {
+            Landed?.Invoke(Mathf.Abs(lastAirborneVerticalVelocity));
+        }
+        
+        if (jumpBufferTimer > 0f)
+        {
+            jumpBufferTimer -= Time.fixedDeltaTime;
+        }
+
+        if (jumpBufferTimer > 0f && coyoteTimer > 0f)
+        {
+            Jump();
+            jumpBufferTimer = 0f;
+        }
         
         ApplyGroundAdhesion();
         
@@ -357,17 +400,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isWallRunning)
             WallJump();
-            
-        if (!isGrounded)
-            return;
         
         TryVault();
 
-        if (!isVaulting)
-        {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, settings.jumpForce, rb.linearVelocity.z);
-        }        
+        jumpBufferTimer = jumpBufferTime;
+    }
+
+    private void Jump()
+    {
+        coyoteTimer = 0f;
         
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, settings.jumpForce, rb.linearVelocity.z);
     }
 
     private void SlideAction_performed(InputAction.CallbackContext obj)
