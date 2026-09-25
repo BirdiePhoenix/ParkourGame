@@ -20,4 +20,12 @@ public class Gamemanager : MonoBehaviour
         int milliseconds = Mathf.FloorToInt((time  * 1000 ) % 1000);
         timeText.text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
     }
+
+    public string GetTime()
+    {
+        int minutes = Mathf.FloorToInt(time / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+        int milliseconds = Mathf.FloorToInt((time * 1000) % 1000);
+        return string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
+    }
 }

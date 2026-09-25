@@ -521,35 +521,6 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(Vector3.up * (mouseX * mouseSensitivity));
     }
 
-    /*private void PauseAction_performed(InputAction.CallbackContext obj)
-    {
-        PauseToggle();
-    }
-
-    private void PauseActionUI_performed(InputAction.CallbackContext obj)
-    {
-        PauseToggle();
-    }
-
-    public void PauseToggle()
-    {
-        paused = !paused;
-        PauseMenu.instance.player = this;
-        PauseMenu.instance.PauseGame();
-
-        InputActions.FindActionMap("Player").Disable();
-        InputActions.FindActionMap("UI").Enable();
-    }
-    public void PauseDisable()
-    {
-        paused = !paused;
-        PauseMenu.instance.player = this;
-        PauseMenu.instance.Close();
-
-        InputActions.FindActionMap("UI").Disable();
-        InputActions.FindActionMap("Player").Enable();
-    }*/
-
     private void InteractAction_performed(InputAction.CallbackContext obj)
     {
         Debug.Log("Interact");
