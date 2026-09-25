@@ -8,6 +8,8 @@ public class PlayerDie : MonoBehaviour
     public List<GameObject> newMap2 = new List<GameObject>();
     public List<GameObject> newMap3 = new List<GameObject>();
 
+    [SerializeField] MusicManager musicManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -55,6 +57,7 @@ public class PlayerDie : MonoBehaviour
     public void Respawn()
     {
         Transform spawnPoint = CheckpointManager.Instance.GetCheckpoint();
+        musicManager.FadeMusic();
 
         if (spawnPoint == null)
         {
