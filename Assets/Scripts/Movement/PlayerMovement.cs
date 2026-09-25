@@ -120,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        paused = false;
         rb.linearDamping = 1;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }

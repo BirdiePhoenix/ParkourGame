@@ -17,6 +17,7 @@ public class Portal : MonoBehaviour
     public bool crystalThreeActive;
     public bool crystalFourActive;
 
+    public List<GameObject> newMap2 = new List<GameObject>();
     public List<GameObject> newMap3 = new List<GameObject>();
     public List<GameObject> newMap4 = new List<GameObject>();
 
@@ -29,6 +30,7 @@ public class Portal : MonoBehaviour
 
         newMap4.ForEach(x => x.SetActive(false));
         newMap3.ForEach(x => x.SetActive(false));
+        newMap2.ForEach(x => x.SetActive(false));
     }
 
     // Update is called once per frame
@@ -38,6 +40,7 @@ public class Portal : MonoBehaviour
         {
             crystalOne.SetActive (true);
             spike.SetActive (false);
+            newMap2.ForEach(x => x.SetActive(true));
             CheckpointManager.Instance.SetCheckpoint(2);
         }
         else
