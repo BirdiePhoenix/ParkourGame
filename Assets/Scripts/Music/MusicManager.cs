@@ -8,12 +8,11 @@ public class MusicManager : MonoBehaviour
     [SerializeField] AudioSource mainBeat;
     [SerializeField] AudioSource crystalMusic;
     [SerializeField] AudioSource loopMusic;
-    [SerializeField] AudioSource bassOneShot;
-    [SerializeField] AudioSource crystalOneShot;
+    [SerializeField] AudioSource transition;
     [SerializeField] protected FaderEnum faderType;
     [SerializeField] private float faderSpeed = 0.5f;
     [SerializeField] private float maxVolume = 0.75f;
-    protected bool isFading = false;
+    protected bool hasCrystal = false;
     private bool isPlaying = false;
     private bool hasLooped = false;
 
@@ -23,23 +22,8 @@ public class MusicManager : MonoBehaviour
         loopMusic.volume = 0;
         mainBeat.volume = maxVolume;
         crystalMusic.volume = 0;
-        bassOneShot.volume = maxVolume;
-        crystalOneShot.volume = maxVolume;
+        transition.volume = maxVolume;
     }
-
-    //public void StartCrystalMusic()
-    //{
-    //    if(crystalMusic.volume == 0)
-    //    {
-    //        //mainBeat.volume = 0;
-    //        crystalMusic.volume = maxVolume;
-    //    }
-    //    else
-    //    {
-    //       // mainBeat.volume = maxVolume;
-    //        crystalMusic.volume = 0;
-    //    }
-    //}
 
     private void FixedUpdate()
     {
@@ -58,42 +42,33 @@ public class MusicManager : MonoBehaviour
 
     public void FadeMusic()
     {
-        //StartCrystalMusic();
-        if (!isPlaying)
+        transition.Play();
+
+        if (!hasCrystal)
         {
-            isPlaying = true;
-            bassOneShot.Play();
             faderType = FaderEnum.In;
         }
         else
         {
-            isPlaying = false;
-            crystalOneShot.Play();
             faderType = FaderEnum.Out;
         }
 
         switch (faderType)
         {
             case FaderEnum.In:
-                if (!isFading)
-                {
-                    StartCoroutine(FadeIn());
-                }
+                StartCoroutine(FadeIn());
                 break;
             case FaderEnum.Out:
-                if (!isFading)
-                {
-                    StartCoroutine(FadeOut());
-                }
+                StartCoroutine(FadeOut());
                 break;
         }
     }
 
     private IEnumerator FadeIn()
     {
-        if (!isFading)
+        if (!hasCrystal)
         {
-            isFading = true;
+            hasCrystal = true;
         }
         yield return new WaitForSeconds(faderSpeed);
         
@@ -104,17 +79,13 @@ public class MusicManager : MonoBehaviour
         {
             StartCoroutine(FadeIn());
         }
-        else
-        {
-            isFading = false;
-        }
     }
 
     private IEnumerator FadeOut()
     {
-        if (!isFading)
+        if (hasCrystal)
         {
-            isFading = true;
+            hasCrystal = false;
         }
         yield return new WaitForSeconds(faderSpeed);
         crystalMusic.volume -= 0.1f;
@@ -123,10 +94,6 @@ public class MusicManager : MonoBehaviour
         if (crystalMusic.volume > 0 || mainBeat.volume < maxVolume)
         {
             StartCoroutine(FadeOut());
-        }
-        else
-        {
-            isFading = false;
         }
     }
 }
