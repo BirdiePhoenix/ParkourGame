@@ -10461,7 +10461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
-  musicManager: {fileID: 0}
+  musicManager: {fileID: 628298599}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -11145,6 +11145,74 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &628298598
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6894202867672310214, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_Name
+      value: MusicManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 172.61235
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -124.75607
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003671687144373021, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+--- !u!114 &628298599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3822211916437747274, guid: 6a19aabf9b06ff546bf96ca9c8a234a5, type: 3}
+  m_PrefabInstance: {fileID: 628298598}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5158af95fe750342aba16a29b6b3a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicManager
 --- !u!1 &646993913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c6afd61853cf634eb9d08029257950a, type: 3}
@@ -16748,7 +16816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
-  musicManager: {fileID: 0}
+  musicManager: {fileID: 628298599}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -18587,7 +18655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
-  musicManager: {fileID: 0}
+  musicManager: {fileID: 628298599}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -24196,7 +24264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f4892fcf5bd6794b988cc62b8530b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start
-  musicManager: {fileID: 0}
+  musicManager: {fileID: 628298599}
   PickUpCrystalStart: 0
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
@@ -25294,7 +25362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd388e6d11888b846aadcdbab45e9543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::test_move_interakt_start_end
-  musicManager: {fileID: 0}
+  musicManager: {fileID: 628298599}
   PickUpCrystalEnd: 0
   PartOfTheGame: 0
   variable: 0
@@ -26171,7 +26239,7 @@ MonoBehaviour:
   - {fileID: 1397837120}
   - {fileID: 14177402}
   - {fileID: 64618756}
-  musicManager: {fileID: 0}
+  musicManager: {fileID: 628298599}
 --- !u!1 &1684918784
 GameObject:
   m_ObjectHideFlags: 0
@@ -33847,6 +33915,7 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 628298598}
   - {fileID: 475078494}
   - {fileID: 869738741}
   - {fileID: 333758420}

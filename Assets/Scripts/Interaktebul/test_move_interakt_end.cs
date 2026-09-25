@@ -62,6 +62,7 @@ public class test_move_interakt_start_end : MonoBehaviour
                     PartOfTheGame += 1;
                     PickUpCrystalEnd = 2;
                     Debug.Log("good game");
+                    musicManager.SetHasCrystal(false);
                     musicManager.FadeMusic();
                 }
                 else
@@ -71,6 +72,7 @@ public class test_move_interakt_start_end : MonoBehaviour
                     PickUpCrystalEnd = 1;
                     variable += 1;
                     Debug.Log("good job");
+                    musicManager.SetHasCrystal(false);
                     musicManager.FadeMusic();
                 }
             }

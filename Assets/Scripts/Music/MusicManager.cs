@@ -12,8 +12,18 @@ public class MusicManager : MonoBehaviour
     [SerializeField] protected FaderEnum faderType;
     [SerializeField] private float faderSpeed = 0.5f;
     [SerializeField] private float maxVolume = 0.75f;
-    protected bool hasCrystal = false;
+    private bool hasCrystal = false;
+    public void SetHasCrystal(bool _hasCrystal)
+    {
+        Debug.Log("Player has crystal");
+        hasCrystal = _hasCrystal;
+    }
+    public bool GetHasCrystal()
+    {
+        return hasCrystal;
+    }
     private bool hasLooped = false;
+
 
     private void Awake()
     {
@@ -43,11 +53,11 @@ public class MusicManager : MonoBehaviour
     {
         transition.Play();
 
-        if (!hasCrystal)
+        if (GetHasCrystal())
         {
             faderType = FaderEnum.In;
         }
-        else
+        else if(!GetHasCrystal())
         {
             faderType = FaderEnum.Out;
         }
@@ -65,10 +75,10 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        if (!hasCrystal)
-        {
-            hasCrystal = true;
-        }
+        //if (!GetHasCrystal())
+        //{
+        //    SetHasCrystal(true);
+        //}
         yield return new WaitForSeconds(faderSpeed);
         
         crystalMusic.volume += 0.1f;
@@ -82,10 +92,10 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
-        if (hasCrystal)
-        {
-            hasCrystal = false;
-        }
+        //if (GetHasCrystal())
+        //{
+        //    SetHasCrystal(false);
+        //}
         yield return new WaitForSeconds(faderSpeed);
         crystalMusic.volume -= 0.1f;
         mainBeat.volume += 0.1f;

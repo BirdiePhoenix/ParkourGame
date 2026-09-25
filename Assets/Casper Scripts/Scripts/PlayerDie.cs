@@ -57,7 +57,6 @@ public class PlayerDie : MonoBehaviour
     public void Respawn()
     {
         Transform spawnPoint = CheckpointManager.Instance.GetCheckpoint();
-        musicManager.FadeMusic();
 
         if (spawnPoint == null)
         {

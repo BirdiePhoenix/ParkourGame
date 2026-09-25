@@ -38,6 +38,7 @@ public class test_move_interakt_start : MonoBehaviour
             Timer timer = GameObject.Find("GameManager").GetComponent<Timer>();
             if (timer != null) { timer.StartTimer(timeMins); }
             PickUpCrystalStart = 1;
+            musicManager.SetHasCrystal(true);
             musicManager.FadeMusic();
         }
 
