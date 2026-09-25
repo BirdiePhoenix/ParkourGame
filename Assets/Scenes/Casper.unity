@@ -6430,6 +6430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   panel: {fileID: 2146724159}
   InputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  fix2: 0
   player: {fileID: 0}
   pauseActionPlayer:
     m_Name: Pause Action Player
@@ -12114,7 +12115,7 @@ MonoBehaviour:
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
   mesh: {fileID: 1003204989}
-  timeMins: 0.1
+  timeMins: 0.3
 --- !u!1 &1024242118 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f07e7de00ceb9348b34b76c8692deba, type: 3}
@@ -17422,6 +17423,7 @@ MonoBehaviour:
   crystalTwoActive: 0
   crystalThreeActive: 0
   crystalFourActive: 0
+  newMap2: []
   newMap3:
   - {fileID: 116347755}
   - {fileID: 1382065850}
