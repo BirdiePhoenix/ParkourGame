@@ -1131,29 +1131,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 755310925}
     - target: {fileID: 3282990057318694905, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
-      propertyPath: faderSpeed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3282990057318694905, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
       propertyPath: transition
-      value: 
-      objectReference: {fileID: 308653678}
-    - target: {fileID: 3282990057318694905, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
-      propertyPath: bassOneShot
       value: 
       objectReference: {fileID: 308653678}
     - target: {fileID: 3282990057318694905, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
       propertyPath: crystalMusic
       value: 
       objectReference: {fileID: 637336060}
-    - target: {fileID: 3282990057318694905, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
-      propertyPath: crystalMusic2
-      value: 
-      objectReference: {fileID: 637336060}
-    - target: {fileID: 3282990057318694905, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
-      propertyPath: crystalOneShot
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4592788540498173823, guid: 9c7be4bfe5e718243ab984102779706d, type: 3}
       propertyPath: m_Name
       value: MusicTrigger
