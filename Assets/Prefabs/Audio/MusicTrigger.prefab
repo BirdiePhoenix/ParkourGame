@@ -46,9 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicTrigger
   bgm: {fileID: 0}
+  mainBeat: {fileID: 0}
   crystalMusic: {fileID: 0}
+  loopMusic: {fileID: 0}
+  transition: {fileID: 0}
   faderType: 0
-  faderSpeed: 0.5
+  faderSpeed: 0
+  maxVolume: 0.75
 --- !u!65 &4752586229455295331
 BoxCollider:
   m_ObjectHideFlags: 0

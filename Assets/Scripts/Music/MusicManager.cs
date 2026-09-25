@@ -13,7 +13,6 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private float faderSpeed = 0.5f;
     [SerializeField] private float maxVolume = 0.75f;
     protected bool hasCrystal = false;
-    private bool isPlaying = false;
     private bool hasLooped = false;
 
     private void Awake()
