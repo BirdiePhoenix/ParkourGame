@@ -142,6 +142,7 @@ public class SoundHandler : MonoBehaviour
                 AudioSource sprintAudio = GetValidAudioSource(PlayerSoundType.Sprint);
                 if (sprintAudio != null)
                     sprintAudio.Stop();
+                PlayRandomSoundOfType(PlayerSoundType.Jump, false);
             }
         }
         //updates grounded and continues playing the walk sound
