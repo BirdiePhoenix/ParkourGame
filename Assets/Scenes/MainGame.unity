@@ -10744,7 +10744,7 @@ MonoBehaviour:
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
   mesh: {fileID: 593668824}
-  timeMins: 0.5
+  timeMins: 1
 --- !u!1001 &595263547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17481,7 +17481,7 @@ MonoBehaviour:
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
   mesh: {fileID: 1003204989}
-  timeMins: 0.5
+  timeMins: 1
 --- !u!1001 &1016425547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25101,7 +25101,7 @@ MonoBehaviour:
   test_move_interakt_start_end: {fileID: 1659859646}
   timer: {fileID: 1523894178}
   mesh: {fileID: 1570571346}
-  timeMins: 3
+  timeMins: 2
 --- !u!65 &1570571345
 BoxCollider:
   m_ObjectHideFlags: 0
