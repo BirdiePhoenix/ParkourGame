@@ -1,9 +1,7 @@
 using System;
 using UnityEngine;
-using UnityEngine.Assemblies;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 
@@ -46,13 +44,15 @@ public class SoundHandlerUI : MonoBehaviour
 
     private void Start()
     {
-        _player = GameObject.Find("Player");
-        _camera  = GameObject.Find("Main Camera");
+        
         OnSceneLoaded();
     }
 
     private void OnSceneLoaded(Scene scene = new Scene(), LoadSceneMode mode = new LoadSceneMode())
     {
+        _player = GameObject.Find("Player");
+        _camera  = GameObject.Find("Main Camera");
+        
         if (_camera != null)
             gameObject.transform.position = _camera.transform.position;
         
@@ -135,6 +135,10 @@ public class SoundHandlerUI : MonoBehaviour
             }
         }
         GameObject camera = FindCamera();
+        if (camera == null)
+        {
+            camera = _camera;
+        }
         if (clip == null || camera == null)
             return;
         //if camera dosent have an audiosource then add it
