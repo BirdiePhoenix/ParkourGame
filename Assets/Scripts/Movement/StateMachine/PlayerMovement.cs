@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private CapsuleCollider capsuleCollider;
     private Vector3 originalCapsuleCenter;
     
+    private PlayerStateMachine stateMachine;
+    private PlayerSlideState slideState;
+    private PlayerGroundedState groundedState;
+    
     public InputActionAsset InputActions;
     
     
@@ -52,7 +56,6 @@ public class PlayerMovement : MonoBehaviour
     
     private float cameraPitch = 0f;
     private bool isGrounded;
-    private float slideAirTimer;
     private bool wasGrounded;
     private float lastAirborneVerticalVelocity;
     private float coyoteTimer;
@@ -64,8 +67,6 @@ public class PlayerMovement : MonoBehaviour
     public bool IsVaulting => isVaulting;
     private bool isWallRunning = false;
     public bool IsWallRunning => isWallRunning;
-    private float slideTimer = 0f;
-    private Vector3 slideDirection;
     private float originalHeight;
     private Vector3 originalCameraLocalPos;
     
@@ -74,6 +75,17 @@ public class PlayerMovement : MonoBehaviour
     public bool vaulting => isVaulting;
     public bool WallLeft => wallLeft;
     public bool WallRight => wallRight;
+    
+    public float SlideMaxDuration => settings.slideMaxDuration;
+    public float SlideAirGracePeriod => settings.slideAirGracePeriod;
+    public bool IsGrounded => isGrounded;
+    public Rigidbody RigidBody => rb;
+    public Vector3 GroundNormal => groundNormal;
+    public Vector2 MoveInput => moveInput;
+    public MovementSettings Settings => settings;
+    
+    public PlayerStateMachine StateMachine => stateMachine;
+    public PlayerGroundedState GroundedState => groundedState;
     
     private Vector2 moveInput;
     private Vector2 lookInput;
@@ -87,6 +99,10 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        
+        stateMachine = new PlayerStateMachine();
+        slideState = new PlayerSlideState(this, settings);
+        groundedState = new PlayerGroundedState(this, settings);
         
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
@@ -112,9 +128,10 @@ public class PlayerMovement : MonoBehaviour
         slideAction.performed += SlideAction_performed;
         slideAction.canceled += SlideAction_canceled;
         
-        interactAction.performed += InteractAction_performed;
         //pauseActionPlayer.performed += PauseAction_performed;
         //pauseActionUI.performed += PauseActionUI_performed;
+
+        stateMachine.ChangeState(groundedState);
     }
 
     private void OnDisable()
@@ -122,7 +139,6 @@ public class PlayerMovement : MonoBehaviour
         jumpAction.performed -= JumpAction_performed;
         slideAction.performed -= SlideAction_performed;
         slideAction.canceled -= SlideAction_canceled;
-        interactAction.performed -= InteractAction_performed;
         //pauseActionPlayer.performed -= PauseAction_performed;
         //pauseActionUI.performed -= PauseActionUI_performed;
         InputActions.FindActionMap("Player").Disable();
@@ -159,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
     {
        
         wasGrounded = isGrounded;
-
+        
         if (!isGrounded)
         {
             lastAirborneVerticalVelocity = rb.linearVelocity.y;
@@ -194,15 +210,10 @@ public class PlayerMovement : MonoBehaviour
         
         ApplyGroundAdhesion();
         
+        stateMachine.FixedUpdate();
         
         if (isVaulting)
             return;
-
-        if (isSliding)
-        {
-            ExecuteSlideMovement();
-            return;
-        }
 
         bool isMidAir = !Physics.CheckSphere(transform.position - new Vector3(0f, 1f, 0f), 0.3f, wallMask);
 
@@ -213,7 +224,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             StopWallRun();
-            ExecuteMovement();
         }   
         
     }
@@ -250,63 +260,6 @@ public class PlayerMovement : MonoBehaviour
     {
         wallRight = Physics.Raycast(transform.position, transform.right, out rightWallHit, settings.wallCheckDistance, wallMask);
         wallLeft = Physics.Raycast(transform.position, -transform.right, out leftWallHit, settings.wallCheckDistance, wallMask);
-    }
-
-    private void ExecuteMovement()
-    {
-        if (isSliding)
-        {
-            Debug.LogError("ExecuteMovement called while sliding!");
-        }
-        Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        
-        Vector3 targetDirection = (transform.forward * moveInput.y + transform.right * moveInput.x);
-
-        float inputMagnitude = Mathf.Clamp01(targetDirection.magnitude);
-
-        if (isGrounded)
-        {
-            targetDirection = Vector3.ProjectOnPlane(targetDirection, groundNormal).normalized;
-        }
-        else
-        {
-            targetDirection.Normalize();
-        }
-        
-        if (targetDirection.sqrMagnitude < 0.001f && isGrounded)
-        {
-            Vector3 movementVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, groundNormal);
-            
-            float speedToDrop = settings.groundDeceleration * Time.deltaTime;
-            if (currentHorizontalVelocity.magnitude <= speedToDrop)
-            {
-                rb.linearVelocity -= movementVelocity;
-            }
-            else
-            {
-                rb.linearVelocity -= movementVelocity * speedToDrop;
-            }
-
-            return;
-        }
-
-        float diagonalScale = 1f;
-        if (Mathf.Abs(moveInput.x) > 0.1f && Mathf.Abs(moveInput.y) > 0.1f)
-        {
-            diagonalScale = 1.414f;
-        }
-
-        float currentAcceleration = isGrounded ? settings.acceleration : (settings.acceleration * settings.airControl);
-        Vector3 forceToApply = targetDirection * (currentAcceleration * diagonalScale * inputMagnitude);
-        
-        float currentVelocityInInputDirection = Vector3.Dot(currentHorizontalVelocity, targetDirection);
-        if (currentVelocityInInputDirection + ((currentAcceleration * diagonalScale) * Time.fixedDeltaTime) > settings.maxSpeed)
-        {
-            float availableSpeedRoom = Mathf.Max(0, settings.maxSpeed - currentVelocityInInputDirection);
-            forceToApply = targetDirection * (availableSpeedRoom / Time.fixedDeltaTime);
-        }
-        
-        rb.AddForce(forceToApply, ForceMode.Force);
     }
     
     private void TryVault()
@@ -419,42 +372,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentHorizontalVelocity.magnitude > (settings.maxSpeed * 0.7f) && isGrounded)
         {
-            Debug.Log("STARTING SLIDE");
-            StartSlide(currentHorizontalVelocity);
+            stateMachine.ChangeState(slideState);
         }
         else
         {
-            Debug.Log("CROUCHING");
             SetCapsuleHeight(settings.crouchHeight);
         }
     }
 
     private void SlideAction_canceled(InputAction.CallbackContext obj)
     {
-        if (isSliding)
-        {
-            StopSlide();
-        }
-
         SetCapsuleHeight(originalHeight);
-    }
-
-    private void StartSlide(Vector3 currentHorizontalVelocity)
-    {
-        isSliding = true;
-        slideTimer = settings.slideMaxDuration;
-        slideAirTimer = 0f;
-
-        slideDirection =
-            Vector3.ProjectOnPlane(
-                currentHorizontalVelocity,
-                groundNormal).normalized;
-        
-        SetCapsuleHeight(settings.crouchHeight);
-
-        rb.AddForce(
-            slideDirection * settings.slideSpeedBoost,
-            ForceMode.VelocityChange);
     }
     
     private void ApplyGroundAdhesion()
@@ -474,71 +402,8 @@ public class PlayerMovement : MonoBehaviour
             -groundNormal * settings.groundAdhesion,
             ForceMode.Acceleration);
     }
-
-    private void ExecuteSlideMovement()
-    {
-        if (isSliding)
-        {
-            slideTimer -= Time.deltaTime;
-
-            if (isGrounded)
-            {
-                slideAirTimer = 0f;
-            }
-            else
-            {
-                slideAirTimer += Time.deltaTime;
-            }
-
-            if (slideTimer <= 0f || slideAirTimer >= 0.15f)
-            {
-                StopSlide();
-            }
-        }
-
-        Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        
-        float speedToDrop = settings.slideFriction * Time.fixedDeltaTime;
-
-        if (currentHorizontalVelocity.magnitude > speedToDrop)
-        {
-            rb.linearVelocity -= currentHorizontalVelocity.normalized * speedToDrop;
-        }
-        
-        Vector3 downhill =
-            Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-
-        float slopeAngle =
-            Vector3.Angle(groundNormal, Vector3.up);
-
-        if (slopeAngle > 1f)
-        {
-            rb.AddForce(
-                downhill * settings.slideSlopeAcceleration,
-                ForceMode.Acceleration);
-        }
-        
-        Vector3 steeringInput =
-            transform.forward * moveInput.y +
-            transform.right * moveInput.x;
-
-        if (steeringInput.sqrMagnitude > 0.001f)
-        {
-            steeringInput =
-                Vector3.ProjectOnPlane(steeringInput, groundNormal).normalized;
-        
-            rb.AddForce(
-                steeringInput * (settings.acceleration * 0.15f),
-                ForceMode.Force);
-        }
-    }
-
-    private void StopSlide()
-    {
-        isSliding = false;
-    }
-
-    private void SetCapsuleHeight(float targetHeight)
+    
+    public void SetCapsuleHeight(float targetHeight)
     {
         capsuleCollider.height = targetHeight;
 
@@ -564,9 +429,16 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(Vector3.up * (mouseX * mouseSensitivity));
     }
 
-    private void InteractAction_performed(InputAction.CallbackContext obj)
+    public Vector3 HorizontalVelocity
     {
-        Debug.Log("Interact");
+        get
+        {
+            return new Vector3(
+                rb.linearVelocity.x,
+                0f,
+                rb.linearVelocity.z
+                );
+        }
     }
     
     private float GetCapsuleBottom()

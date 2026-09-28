@@ -28,6 +28,7 @@ public class MovementSettings : ScriptableObject
     public float slideSpeedBoost = 5f;
     public float slideFriction = 5f;
     public float slideMaxDuration = 1.2f;
+    public float slideAirGracePeriod = 0.15f;
     public float crouchHeight = 1f;
     public float slideSlopeAcceleration = 20f;
 }
